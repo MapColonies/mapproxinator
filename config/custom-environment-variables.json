@@ -38,5 +38,28 @@
         }
       }
     }
+  },
+  "pullTimeOutMS": "PULL_TIMEOUT_MS",
+  "timeoutLivenessKillMiS": "LIVENESS_KILL_TIMEOUT_MS",
+  "S3": {
+    "accessKeyId": "S3_ACCESS_KEY_ID",
+    "secretAccessKey": "S3_SECRET_ACCESS_KEY",
+    "endpointUrl": "S3_ENDPOINT_URL",
+    "bucket": "S3_BUCKET",
+    "sslEnabled": "S3_SSL_ENABLED"
+  },
+  "DB": {
+    "host": "DB_HOST",
+    "port": "DB_PORT",
+    "user": "DB_USER",
+    "password": "DB_PASSWORD",
+    "database": "DB_NAME",
+    "enableSslAuth": "DB_SSL_ENABLE",
+    "rejectUnauthorized": "DB_SSL_REJECT_UNAUTHORIZED",
+    "sslPaths": {
+      "ca": "DB_SSL_CA",
+      "key": "DB_SSL_KEY",
+      "cert": "DB_SSL_CERT"
+    }
   }
 }

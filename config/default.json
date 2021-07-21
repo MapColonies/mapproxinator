@@ -7,7 +7,7 @@
   },
   "telemetry": {
     "logger": {
-      "level": "info",
+      "level": "debug",
       "prettyPrint": false
     }
   },
@@ -23,6 +23,39 @@
         "enabled": true,
         "options": null
       }
+    }
+  },
+  "configProvider": "s3",
+  "pullTimeOutMS": 5000,
+  "livenessKillTimeOutMS": 5000,
+  "FS": {
+    "updatedTimeFilePath": "/home/shlomiko/Documents/updated_time.json"
+  },
+  "S3": {
+    "accessKeyId": "minioadmin",
+    "secretAccessKey": "minioadmin",
+    "endpointUrl": "http://localhost:9000",
+    "bucket": "",
+    "objectKey": "mapproxy.yaml",
+    "sslEnabled": false
+  },
+  "DB": {
+    "host": "localhost",
+    "user": "postgres",
+    "password": "postgres",
+    "database": "mapproxy-config-dev",
+    "port": 5432,
+    "table": "config",
+    "columns": {
+      "data": "data",
+      "updatedTime": "updated_time"
+    },
+    "enableSslAuth": false,
+    "rejectUnauthorized": true,
+    "sslPaths": {
+      "ca": "",
+      "key": "",
+      "cert": ""
     }
   }
 }
