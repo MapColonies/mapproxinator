@@ -18,7 +18,7 @@ const tracing = new Tracing([
 
 import { getApp } from './app';
 import { Readiness } from './probe/readindess';
-import { Watcher } from './watcher';
+import { PollManager } from './pollManager';
 import { Liveness } from './probe/liveness';
 
 interface IServerConfig {
@@ -31,7 +31,7 @@ const port: number = parseInt(serverConfig.port) || DEFAULT_SERVER_PORT;
 const app = getApp();
 
 const logger = container.resolve<Logger>(Services.LOGGER);
-const watcher = container.resolve(Watcher);
+const pollManager = container.resolve(PollManager);
 
 const healthCheck = container.resolve(Liveness).probe;
 const readyCheck = container.resolve(Readiness).probe;
@@ -42,10 +42,7 @@ const server = createTerminus(createServer(app), {
 server.listen(port, () => {
   logger.info(`app started on port ${port}`);
 });
-// eslint-disable-next-line @typescript-eslint/explicit-function-return-type
-watcher
-  .watch()
-  .then((res) => console.log('res:', res))
-  .catch((err) => {
-    console.log(err);
-  });
+
+void pollManager.poll().catch((error: Error) => {
+  logger.fatal(error); 
+});

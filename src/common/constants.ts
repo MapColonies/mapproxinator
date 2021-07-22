@@ -14,5 +14,6 @@ export enum Services {
   DBCONFIG = 'DB',
   S3CONFIG = 'S3',
   FSCONFIG = 'FS',
+  POLLCONFIG = "IPollConfig",
   CONFIGPROVIDER = 'CONFIGPROVIDER',
 }

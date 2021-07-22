@@ -25,17 +25,23 @@
       }
     }
   },
-  "configProvider": "s3",
-  "pullTimeOutMS": 5000,
-  "livenessKillTimeOutMS": 5000,
+  "configProvider": "db",
+  "poll": {
+    "timeout": {
+      "frequencyMilliseconds": 5000,
+      "readinessKillMaxRandomSeconds": 300,
+      "livenessKillSeconds": 3
+    }
+  },
   "FS": {
-    "updatedTimeFilePath": "/home/shlomiko/Documents/updated_time.json"
+    "updatedTimeJsonFilePath": "",
+    "yamlFilePath": ""
   },
   "S3": {
     "accessKeyId": "minioadmin",
     "secretAccessKey": "minioadmin",
     "endpointUrl": "http://localhost:9000",
-    "bucket": "",
+    "bucket": "dtm",
     "objectKey": "mapproxy.yaml",
     "sslEnabled": false
   },

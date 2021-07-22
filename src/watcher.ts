@@ -1,34 +1,43 @@
-import config from 'config';
-import { singleton } from 'tsyringe';
-import { PullManager } from './pullManager';
-import { Readiness } from './probe/readindess';
-import { Liveness } from './probe/liveness';
+/* eslint-disable @typescript-eslint/naming-convention */
+import { Logger } from '@map-colonies/js-logger';
+import { inject, singleton } from 'tsyringe';
+import { Services } from './common/constants';
+import { IConfigProvider, IFSConfig } from './common/interfaces';
+import { compareDates, getFileContentAsJson } from './common/utils';
 
 @singleton()
 export class Watcher {
-  public constructor(private readonly pullManager: PullManager, private readonly liveness: Liveness, private readonly readiness: Readiness) {}
+  public constructor(
+    @inject(Services.FSCONFIG) private readonly fsConfig: IFSConfig,
+    @inject(Services.CONFIGPROVIDER) private readonly configProvider: IConfigProvider,
+    @inject(Services.LOGGER) private readonly logger: Logger,
+  ) {}
 
-  public async watch(): Promise<void> {
-    try {
-      const pullTimeOutMS = config.get<number>('pullTimeOutMS');
-      const livenessKillTimeOutMS = config.get<number>('livenessKillTimeOutMS');
-      if (await this.pullManager.pullAndCheckForUpdate()) {
-        console.log('do something');
-      } else {
-        this.readiness.kill();
-        await this.delay(livenessKillTimeOutMS);
-        this.liveness.kill();
-      }
-      setTimeout(() => {
-        void this.watch();
-      }, pullTimeOutMS);
-    } catch (error) {
-      // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
-      throw new Error(`${error}`);
-    }
+
+  public async isUpdated(): Promise<boolean> {
+    // gets the last updated time from the saved file
+    const lastUpdatedTimeFromFile = await this.getLastUpdatedTimeFromFile();
+    // gets the last updated time from provider
+    const lastUpdatedTimeFromProvider = await this.getLastUpdatedTimeFromProvider();
+
+    const isDateEquals = compareDates(lastUpdatedTimeFromFile, lastUpdatedTimeFromProvider);
+    return isDateEquals;
   }
 
-  private async delay(ms: number): Promise<void> {
-    await new Promise((resolve) => setTimeout(resolve, ms));
+  private async getLastUpdatedTimeFromFile(): Promise<Date> {
+    const updatedTimeFilePath = this.fsConfig.updatedTimeJsonFilePath;
+
+    // gets the last updated date from the saved file
+    const fileContent = await getFileContentAsJson(updatedTimeFilePath);
+    // create 'Date' instance from the readed file content
+    const lastUpdatedTime = new Date(fileContent.updatedTime);
+    return lastUpdatedTime;
+  }
+
+  private async getLastUpdatedTimeFromProvider(): Promise<Date> {
+    // gets the config content as json objcet from defined provider
+    const lastUpdatedTime = await this.configProvider.getLastUpdatedtime();
+    // extract the last update time field from the json object
+    return lastUpdatedTime;
   }
 }

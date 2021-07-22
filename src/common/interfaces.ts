@@ -12,21 +12,33 @@ export interface OpenApiConfig {
 }
 
 export interface IConfigProvider {
-  provide: () => Promise<IQueryResult>;
-}
-
-export interface IQueryResult {
-  id?: number;
-  data: Record<string, unknown>;
-  updated_time: Date;
+  getLastUpdatedtime: () => Promise<Date>;
 }
 
 export interface IUpdatedTimeFileContentResult {
   updatedTime: Date;
 }
 
+export interface IPollConfig {
+  timeout: {
+    frequencyMilliseconds: number;
+    readinessKillMaxRandomSeconds: number;
+    livenessKillSeconds: number;
+  }
+}
+
 export interface IFSConfig {
-  updatedTimeFilePath: string;
+  updatedTimeJsonFilePath: string;
+  yamlFilePath: string;
+}
+
+export interface IS3Config {
+  accessKeyId: string;
+  secretAccessKey: string;
+  endpointUrl: string;
+  bucket: string;
+  objectKey: string;
+  sslEnabled: boolean;
 }
 
 export interface IDBConfig {

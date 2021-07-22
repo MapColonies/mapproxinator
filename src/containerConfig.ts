@@ -6,18 +6,20 @@ import jsLogger, { LoggerOptions } from '@map-colonies/js-logger';
 import { Metrics } from '@map-colonies/telemetry';
 import { Services } from './common/constants';
 import { tracing } from './common/tracing';
-import { IConfigProvider } from './common/interfaces';
+import { IConfigProvider, IPollConfig } from './common/interfaces';
 import { getProvider } from './getProvider';
 
 function registerExternalValues(): void {
   const loggerConfig = config.get<LoggerOptions>('telemetry.logger');
   const provider = config.get<string>('configProvider');
+  const pollConfig = config.get<IPollConfig>('poll');
   const fsConfig = config.get(Services.FSCONFIG);
   // @ts-expect-error the signature is wrong
   const logger = jsLogger({ ...loggerConfig, prettyPrint: loggerConfig.prettyPrint, hooks: { logMethod } });
   container.register(Services.CONFIG, { useValue: config });
   container.register(Services.LOGGER, { useValue: logger });
   container.register(Services.FSCONFIG, { useValue: fsConfig });
+  container.register(Services.POLLCONFIG, { useValue: pollConfig });
   tracing.start();
   const tracer = trace.getTracer('app');
   container.register(Services.TRACER, { useValue: tracer });
