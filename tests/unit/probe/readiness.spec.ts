@@ -8,11 +8,10 @@ let readiness: Readiness;
 describe('readiness', () => {
   beforeAll(() => {
     registerTestValues();
-    readiness = container.resolve(Readiness);
   });
 
   beforeEach(() => {
-    jest.clearAllMocks();
+    readiness = container.resolve(Readiness);
   });
 
   afterEach(() => {
@@ -26,9 +25,9 @@ describe('readiness', () => {
     });
 
     it('should throw an HealthCheckError error if isReady is false', async () => {
-        readiness.kill()
-        const res = readiness.probe();
-        await expect(res).rejects.toThrow(HealthCheckError);
-      });
+      readiness.kill();
+      const res = readiness.probe();
+      await expect(res).rejects.toThrow(HealthCheckError);
+    });
   });
 });

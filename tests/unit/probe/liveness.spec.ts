@@ -8,11 +8,10 @@ let liveness: Liveness;
 describe('liveness', () => {
   beforeAll(() => {
     registerTestValues();
-    liveness = container.resolve(Liveness);
   });
 
   beforeEach(() => {
-    jest.clearAllMocks();
+    liveness = container.resolve(Liveness);
   });
 
   afterEach(() => {
@@ -26,9 +25,9 @@ describe('liveness', () => {
     });
 
     it('should throw an HealthCheckError error if isLive is false', async () => {
-        liveness.kill()
-        const res = liveness.probe();
-        await expect(res).rejects.toThrow(HealthCheckError);
-      });
+      liveness.kill();
+      const res = liveness.probe();
+      await expect(res).rejects.toThrow(HealthCheckError);
+    });
   });
 });
