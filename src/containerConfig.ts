@@ -7,7 +7,7 @@ import { Metrics } from '@map-colonies/telemetry';
 import { Services } from './common/constants';
 import { tracing } from './common/tracing';
 import { IConfigProvider, IPollConfig } from './common/interfaces';
-import { getProvider } from './getProvider';
+import { getProvider } from './common/getProvider';
 
 function registerExternalValues(): void {
   const loggerConfig = config.get<LoggerOptions>('telemetry.logger');

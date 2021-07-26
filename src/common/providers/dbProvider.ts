@@ -21,7 +21,7 @@ export class DBProvider implements IConfigProvider {
     try {
       const query = `SELECT ${this.dbConfig.columns.updatedTime} FROM ${this.dbConfig.table} ORDER BY ${this.dbConfig.columns.updatedTime} DESC limit 1`;
       // eslint-disable-next-line @typescript-eslint/naming-convention
-      const result = await client.query<{updated_time: Date}>(query);
+      const result = await client.query<{ updated_time: Date }>(query);
       const lastUpdatedTime = result.rows[0].updated_time;
       return lastUpdatedTime;
     } catch (error) {

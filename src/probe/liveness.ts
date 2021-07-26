@@ -15,7 +15,6 @@ export class Liveness {
     if (this.isLive) {
       return Promise.resolve();
     } else {
-      // throw new HealthCheckError('Error', 'Readiness has been terminated');
       throw new HealthCheckError('liveness has been terminated.', []);
     }
   };

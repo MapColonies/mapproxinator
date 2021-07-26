@@ -17,7 +17,7 @@ const tracing = new Tracing([
 ]);
 
 import { getApp } from './app';
-import { Readiness } from './probe/readindess';
+import { Readiness } from './probe/readiness';
 import { PollManager } from './pollManager';
 import { Liveness } from './probe/liveness';
 
@@ -44,5 +44,5 @@ server.listen(port, () => {
 });
 
 void pollManager.poll().catch((error: Error) => {
-  logger.fatal(error); 
+  logger.fatal(error);
 });

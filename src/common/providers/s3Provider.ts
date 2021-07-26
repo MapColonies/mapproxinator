@@ -7,7 +7,7 @@ import { IConfigProvider, IS3Config } from '../interfaces';
 export class S3Provider implements IConfigProvider {
   private readonly s3Config: IS3Config;
   private readonly s3: S3;
-  
+
   public constructor(s3Config: IS3Config) {
     this.s3Config = s3Config;
     const credentials: CredentialsOptions = {

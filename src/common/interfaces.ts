@@ -24,7 +24,7 @@ export interface IPollConfig {
     frequencyMilliseconds: number;
     readinessKillMaxRandomSeconds: number;
     livenessKillSeconds: number;
-  }
+  };
 }
 
 export interface IFSConfig {
