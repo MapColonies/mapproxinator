@@ -7,19 +7,22 @@ import { compareDates, getFileContentAsJson } from './common/utils';
 
 @singleton()
 export class Watcher {
+  private lastUpdatedTime: Date | undefined;
   public constructor(
     @inject(Services.CONFIG) private readonly config: IConfig,
     @inject(Services.CONFIGPROVIDER) private readonly configProvider: IConfigProvider,
-    @inject(Services.LOGGER) private readonly logger: Logger
-  ) {}
-
+    @inject(Services.LOGGER) private readonly logger: Logger,
+    ) {}
   public async isUpdated(): Promise<boolean> {
     // gets the last updated time from the saved file
-    const lastUpdatedTimeFromFile = await this.getLastUpdatedTimeFromFile();
+    this.lastUpdatedTime = this.lastUpdatedTime? await this.getLastUpdatedTimeFromFile(): this.lastUpdatedTime;
     // gets the last updated time from provider
     const lastUpdatedTimeFromProvider = await this.getLastUpdatedTimeFromProvider();
-    const isDateEquals = compareDates(lastUpdatedTimeFromFile, lastUpdatedTimeFromProvider);
-    return isDateEquals;
+    if (this.lastUpdatedTime !== undefined) {
+      const isDateEquals = compareDates(this.lastUpdatedTime, lastUpdatedTimeFromProvider);
+      return isDateEquals;
+    }
+    return true;
   }
 
   private async getLastUpdatedTimeFromFile(): Promise<Date> {
