@@ -28,7 +28,6 @@ export interface IPollConfig {
 }
 
 export interface IFSConfig {
-  updatedTimeJsonFilePath: string;
   yamlFilePath: string;
 }
 

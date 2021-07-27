@@ -26,6 +26,7 @@
     }
   },
   "configProvider": "db",
+  "updatedTimeJsonFilePath": "",
   "poll": {
     "timeout": {
       "frequencyMilliseconds": 5000,
@@ -34,14 +35,13 @@
     }
   },
   "FS": {
-    "updatedTimeJsonFilePath": "",
     "yamlFilePath": ""
   },
   "S3": {
     "accessKeyId": "minioadmin",
     "secretAccessKey": "minioadmin",
     "endpointUrl": "http://localhost:9000",
-    "bucket": "dtm",
+    "bucket": "",
     "objectKey": "mapproxy.yaml",
     "sslEnabled": false
   },

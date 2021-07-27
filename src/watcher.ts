@@ -2,13 +2,13 @@
 import { Logger } from '@map-colonies/js-logger';
 import { inject, singleton } from 'tsyringe';
 import { Services } from './common/constants';
-import { IConfigProvider, IFSConfig } from './common/interfaces';
+import { IConfigProvider, IConfig } from './common/interfaces';
 import { compareDates, getFileContentAsJson } from './common/utils';
 
 @singleton()
 export class Watcher {
   public constructor(
-    @inject(Services.FSCONFIG) private readonly fsConfig: IFSConfig,
+    @inject(Services.CONFIG) private readonly config: IConfig,
     @inject(Services.CONFIGPROVIDER) private readonly configProvider: IConfigProvider,
     @inject(Services.LOGGER) private readonly logger: Logger
   ) {}
@@ -23,7 +23,7 @@ export class Watcher {
   }
 
   private async getLastUpdatedTimeFromFile(): Promise<Date> {
-    const updatedTimeFilePath = this.fsConfig.updatedTimeJsonFilePath;
+    const updatedTimeFilePath = this.config.get<string>('updatedTimeJsonFilePath');
     // gets the last updated date from the saved file
     const fileContent = await getFileContentAsJson(updatedTimeFilePath);
     // create 'Date' instance from the readed file content

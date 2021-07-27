@@ -40,6 +40,7 @@
     }
   },
   "configProvider": "CONFIG_PROVIDER",
+  "updatedTimeJsonFilePath": "FS_UPDATED_TIME_JSON_FILE_PATH",
   "poll": {
     "timeout": {
       "frequencyMilliseconds": "POLL_TIMEOUT_FREQUENCY_MS",
@@ -48,7 +49,6 @@
     }
   },
   "FS": {
-    "updatedTimeJsonFilePath": "FS_UPDATED_TIME_JSON_FILE_PATH",
     "yamlFilePath": "FS_YAML_FILE_PATH"
   },
   "S3": {
