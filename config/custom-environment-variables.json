@@ -39,6 +39,7 @@
       }
     }
   },
+  "configProvider": "CONFIG_PROVIDER",
   "poll": {
     "timeout": {
       "frequencyMilliseconds": "POLL_TIMEOUT_FREQUENCY_MS",

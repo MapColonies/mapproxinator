@@ -1,8 +1,6 @@
 import { IConfig } from 'config';
 import { DependencyContainer } from 'tsyringe';
 import { DBProvider } from './providers/dbProvider';
-//import { FSProvider } from './common/providers/fSProvider';
-//import { S3Provider } from './common/providers/s3Provider';
 import { IConfigProvider, IDBConfig, IFSConfig, IS3Config } from './interfaces';
 import { Services } from './constants';
 import { S3Provider } from './providers/s3Provider';
@@ -16,13 +14,10 @@ export const getProvider = (provider: string, container: DependencyContainer): I
   const s3Config = config.get<IS3Config>(Services.S3CONFIG);
   const dbConfig = config.get<IDBConfig>(Services.DBCONFIG);
 
-  //const s3Config = container.resolve(Services.S3CONFIG);
   switch (provider.toLowerCase()) {
     case Providers.FS:
-      // return new FSProvider();
       return new FSProvider(fsConfig);
     case Providers.S3:
-      //return new S3Provider();
       return new S3Provider(s3Config);
     case Providers.DB:
       return new DBProvider(dbConfig);
