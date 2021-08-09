@@ -20,7 +20,6 @@ const serverConfig = get<IServerConfig>('server');
 const port: number = parseInt(serverConfig.port) || DEFAULT_SERVER_PORT;
 
 const app = getApp();
-
 const logger = container.resolve<Logger>(Services.LOGGER);
 const pollManager = container.resolve(PollManager);
 
@@ -29,11 +28,10 @@ const readyCheck = container.resolve(Readiness).probe;
 const server = createTerminus(createServer(app), {
   healthChecks: { '/liveness': healthCheck, '/readiness': readyCheck, onSignal: container.resolve('onSignal') },
 });
-
 server.listen(port, () => {
   logger.info(`app started on port ${port}`);
 });
 
-void pollManager.poll().catch((error: Error) => {
+pollManager.poll().catch((error: Error) => {
   logger.fatal(error);
 });

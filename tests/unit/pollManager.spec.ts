@@ -32,6 +32,7 @@ describe('pollManager', () => {
     delayStub = jest.spyOn(pollManager, 'delay').mockImplementation(async () => Promise.resolve());
     livenessKillStub = jest.spyOn(liveness, 'kill');
     readinessKillStub = jest.spyOn(readiness, 'kill');
+    jest.useFakeTimers();
   });
 
   afterEach(() => {
@@ -70,13 +71,13 @@ describe('pollManager', () => {
     it('should reject and not to throw an error due to poll date error (watcher)', async () => {
       const loggerMock = ({
         error: jest.fn(),
+        info: jest.fn(),
       } as unknown) as Logger;
       pollManager = new PollManager(loggerMock, container.resolve(Services.POLLCONFIG), watcher, liveness, readiness);
       getRandomIntegerStub.mockReturnValue(5);
       isUpdatedStub.mockRejectedValue(new Error('Error1'));
 
-      const res = pollManager.poll();
-      await expect(res).resolves.not.toThrow();
+      await pollManager.poll();
 
       expect(loggerMock.error).toHaveBeenCalledTimes(1);
       expect(isUpdatedStub).toHaveBeenCalledTimes(1);

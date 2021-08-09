@@ -56,7 +56,10 @@
     "secretAccessKey": "S3_SECRET_ACCESS_KEY",
     "endpointUrl": "S3_ENDPOINT_URL",
     "bucket": "S3_BUCKET",
-    "sslEnabled": "S3_SSL_ENABLED"
+    "sslEnabled": {
+      "__name": "S3_SSL_ENABLED",
+      "__format": "boolean"
+    }
   },
   "DB": {
     "host": "DB_HOST",

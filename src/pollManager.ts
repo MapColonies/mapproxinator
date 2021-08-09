@@ -20,11 +20,15 @@ export class PollManager {
     const frequencyTimeOutMS = this.pollCofig.timeout.frequencyMilliseconds;
     const livenessKillTimeOutMS = this.pollCofig.timeout.livenessKillSeconds;
     try {
+      this.logger.info(`polling attempt`);
       if (!(await this.watcher.isUpdated())) {
+        this.logger.info('changes detected! - updating configurations');
         await this.delay(this.getRandomInteger());
         this.readiness.kill();
         await this.delay(livenessKillTimeOutMS);
         this.liveness.kill();
+      } else {
+        this.logger.info('no changes detected');
       }
     } catch (error) {
       if (error instanceof Error) {

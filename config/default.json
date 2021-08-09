@@ -7,7 +7,7 @@
   },
   "telemetry": {
     "logger": {
-      "level": "warn",
+      "level": "info",
       "prettyPrint": false
     }
   },
@@ -26,7 +26,7 @@
     }
   },
   "configProvider": "db",
-  "updatedTimeJsonFilePath": "",
+  "updatedTimeJsonFilePath": "/",
   "poll": {
     "timeout": {
       "frequencyMilliseconds": 5000,
