@@ -23,8 +23,11 @@ export class PollManager {
       this.logger.info(`polling attempt`);
       if (!(await this.watcher.isUpdated())) {
         this.logger.info('changes detected! - updating configurations');
-        await this.delay(this.getRandomInteger());
+        const readinessKillRndInt = this.getRandomInteger();
+        this.logger.info(`killing readiness in ${readinessKillRndInt} seconds`);
+        await this.delay(readinessKillRndInt);
         this.readiness.kill();
+        this.logger.info(`killing liveness in ${livenessKillTimeOutMS} seconds`);
         await this.delay(livenessKillTimeOutMS);
         this.liveness.kill();
       } else {
