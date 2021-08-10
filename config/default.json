@@ -24,5 +24,44 @@
         "options": null
       }
     }
+  },
+  "configProvider": "db",
+  "updatedTimeJsonFilePath": "",
+  "poll": {
+    "timeout": {
+      "frequencyMilliseconds": 5000,
+      "readinessKillMaxRandomSeconds": 300,
+      "livenessKillSeconds": 3
+    }
+  },
+  "FS": {
+    "yamlFilePath": ""
+  },
+  "S3": {
+    "accessKeyId": "minioadmin",
+    "secretAccessKey": "minioadmin",
+    "endpointUrl": "http://localhost:9000",
+    "bucket": "",
+    "objectKey": "mapproxy.yaml",
+    "sslEnabled": false
+  },
+  "DB": {
+    "host": "localhost",
+    "user": "postgres",
+    "password": "postgres",
+    "database": "mapproxy-config-dev",
+    "port": 5432,
+    "table": "config",
+    "columns": {
+      "data": "data",
+      "updatedTime": "updated_time"
+    },
+    "enableSslAuth": false,
+    "rejectUnauthorized": true,
+    "sslPaths": {
+      "ca": "",
+      "key": "",
+      "cert": ""
+    }
   }
 }

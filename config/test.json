@@ -1,1 +1,9 @@
-{}
+{
+  "configProvider": "fs",
+  "updatedTimeJsonFilePath": "tests/unit/mock/updated_time.json",
+  "poll": {
+    "timeout": {
+      "readinessKillMaxRandomSeconds": 1
+    }
+  }
+}

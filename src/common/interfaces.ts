@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/naming-convention */
 export interface IConfig {
   get: <T>(setting: string) => T;
   has: (setting: string) => boolean;
@@ -8,4 +9,55 @@ export interface OpenApiConfig {
   basePath: string;
   jsonPath: string;
   uiPath: string;
+}
+
+export interface IConfigProvider {
+  getLastUpdatedtime: () => Promise<Date>;
+}
+
+export interface IUpdatedTimeFileContentResult {
+  updatedTime: Date;
+}
+
+export interface IPollConfig {
+  timeout: {
+    frequencyMilliseconds: number;
+    readinessKillMaxRandomSeconds: number;
+    livenessKillSeconds: number;
+  };
+}
+
+export interface IFSConfig {
+  yamlFilePath: string;
+}
+
+export interface IS3Config {
+  accessKeyId: string;
+  secretAccessKey: string;
+  endpointUrl: string;
+  bucket: string;
+  objectKey: string;
+  sslEnabled: boolean;
+}
+
+export interface IDBConfig {
+  host: string;
+  user: string;
+  database: string;
+  password: string;
+  port: number;
+  table: string;
+  columns: IDBColumns;
+  sslEnabled: boolean;
+  rejectUnauthorized: boolean;
+  sslPaths: {
+    ca: string;
+    key: string;
+    cert: string;
+  };
+}
+
+export interface IDBColumns {
+  data: string;
+  updatedTime: string;
 }
