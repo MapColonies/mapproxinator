@@ -18,7 +18,7 @@ export class PollManager {
 
   public async poll(): Promise<void> {
     const frequencyTimeOutMS = this.pollCofig.timeout.frequencyMilliseconds;
-    const livenessKillTimeOutMS = this.pollCofig.timeout.livenessKillSeconds;
+    const livenessKillTimeOutSeconds = this.pollCofig.timeout.livenessKillSeconds;
     try {
       this.logger.info(`polling attempt`);
       if (!(await this.watcher.isUpdated())) {
@@ -27,8 +27,8 @@ export class PollManager {
         this.logger.info(`killing readiness in ${readinessKillRndInt} seconds`);
         await this.delay(readinessKillRndInt);
         this.readiness.kill();
-        this.logger.info(`killing liveness in ${livenessKillTimeOutMS} seconds`);
-        await this.delay(livenessKillTimeOutMS);
+        this.logger.info(`killing liveness in ${livenessKillTimeOutSeconds} seconds`);
+        await this.delay(livenessKillTimeOutSeconds);
         this.liveness.kill();
       } else {
         this.logger.info('no changes detected');
