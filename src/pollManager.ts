@@ -22,7 +22,7 @@ export class PollManager {
     try {
       this.logger.info(`polling attempt`);
       if (!(await this.watcher.isUpdated())) {
-        this.logger.info('changes detected! - updating configurations');
+        this.logger.debug('changes detected! - updating configurations');
         const readinessKillRndInt = this.getRandomInteger();
         this.logger.info(`killing readiness in ${readinessKillRndInt} seconds`);
         await this.delay(readinessKillRndInt);
@@ -31,7 +31,7 @@ export class PollManager {
         await this.delay(livenessKillTimeOutSeconds);
         this.liveness.kill();
       } else {
-        this.logger.info('no changes detected');
+        this.logger.debug('no changes detected');
       }
     } catch (error) {
       if (error instanceof Error) {
