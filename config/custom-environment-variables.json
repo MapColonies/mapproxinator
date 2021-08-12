@@ -39,17 +39,22 @@
       }
     }
   },
+  "initMode": {
+    "__name": "INIT_MODE",
+    "__format": "boolean"
+  },
   "configProvider": "CONFIG_PROVIDER",
-  "updatedTimeJsonFilePath": "FS_UPDATED_TIME_JSON_FILE_PATH",
+  "updatedTimeJsonFilePath": "UPDATED_TIME_JSON_FILE_PATH",
   "poll": {
     "timeout": {
       "frequencyMilliseconds": "POLL_TIMEOUT_FREQUENCY_MS",
       "readinessKillMaxRandomSeconds": "POLL_TIMEOUT_READINESS_KILL_MAX_RND_SECONDS",
-      "livenessKillSeconds": "POLL_TIMEOUT_LIVENESS_KILL_SECONDS"
+      "requestsKillSeconds": "POLL_TIMEOUT_REQUESTS_KILL_SECONDS"
     }
   },
   "FS": {
-    "yamlFilePath": "FS_YAML_FILE_PATH"
+    "yamlSourceFilePath": "FS_YAML_SOURCE_FILE_PATH",
+    "yamlDestinationFilePath": "FS_YAML_DESTINATION_FILE_PATH"
   },
   "S3": {
     "accessKeyId": "S3_ACCESS_KEY_ID",

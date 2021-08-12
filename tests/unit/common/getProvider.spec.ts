@@ -1,4 +1,3 @@
-import { container } from 'tsyringe';
 import { registerTestValues } from '../../integration/testContainerConfig';
 import { Providers } from '../../../src/common/enums';
 import { getProvider } from '../../../src/common/getProvider';
@@ -15,19 +14,19 @@ describe('getProvider', () => {
 
   it('should return a DB provider', () => {
     const providerName = 'DBProvider';
-    const provider = getProvider(Providers.DB, container);
+    const provider = getProvider(Providers.DB);
     expect(provider.constructor.name).toBe(providerName);
   });
 
   it('should return an FS provider', () => {
     const providerName = 'FSProvider';
-    const provider = getProvider(Providers.FS, container);
+    const provider = getProvider(Providers.FS);
     expect(provider.constructor.name).toBe(providerName);
   });
 
   it('should return a S3 provider', () => {
     const providerName = 'S3Provider';
-    const provider = getProvider(Providers.S3, container);
+    const provider = getProvider(Providers.S3);
     expect(provider.constructor.name).toBe(providerName);
   });
 });

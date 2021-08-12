@@ -4,7 +4,7 @@ import { trace } from '@opentelemetry/api';
 import { Metrics } from '@map-colonies/telemetry';
 import jsLogger from '@map-colonies/js-logger';
 import { Services } from '../../src/common/constants';
-import { IConfigProvider, IPollConfig } from '../../src/common/interfaces';
+import { IPollConfig } from '../../src/common/interfaces';
 import { getProvider } from '../../src/common/getProvider';
 
 function registerTestValues(): void {
@@ -23,9 +23,7 @@ function registerTestValues(): void {
   const meter = metrics.start();
   container.register(Services.METER, { useValue: meter });
   container.register(Services.CONFIGPROVIDER, {
-    useFactory: (): IConfigProvider => {
-      return getProvider(provider, container);
-    },
+    useValue: getProvider(provider),
   });
 }
 

@@ -11,18 +11,20 @@ import { getApp } from './app';
 import { Readiness } from './probe/readiness';
 import { PollManager } from './pollManager';
 import { Liveness } from './probe/liveness';
+import { Initializer } from './initializer';
 
 interface IServerConfig {
   port: string;
 }
 
 const serverConfig = get<IServerConfig>('server');
+const initMode = get<boolean>('initMode');
 const port: number = parseInt(serverConfig.port) || DEFAULT_SERVER_PORT;
 
 const app = getApp();
 const logger = container.resolve<Logger>(Services.LOGGER);
 const pollManager = container.resolve(PollManager);
-
+const initializer = container.resolve(Initializer);
 const healthCheck = container.resolve(Liveness).probe;
 const readyCheck = container.resolve(Readiness).probe;
 const server = createTerminus(createServer(app), {
@@ -32,6 +34,12 @@ server.listen(port, () => {
   logger.info(`app started on port ${port}`);
 });
 
-pollManager.poll().catch((error: Error) => {
+try {
+  if (initMode) {
+    void initializer.init();
+  } else {
+    void pollManager.poll();
+  }
+} catch (error) {
   logger.fatal(error);
-});
+}

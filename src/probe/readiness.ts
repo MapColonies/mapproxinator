@@ -24,4 +24,9 @@ export class Readiness {
     this.logger.debug(`killing service readiness.`);
     this.isReady = false;
   };
+
+  public start = (): void => {
+    this.logger.debug(`starting service readiness.`);
+    this.isReady = true;
+  };
 }

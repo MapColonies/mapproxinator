@@ -25,17 +25,20 @@
       }
     }
   },
-  "configProvider": "db",
-  "updatedTimeJsonFilePath": "",
+  "initMode": true,
+  "configProvider": "fs",
+  "updatedTimeFileName": "updated_time.json",
+  "updatedTimeJsonFilePath": "/path/to/existing/updated_time.json",
   "poll": {
     "timeout": {
       "frequencyMilliseconds": 5000,
-      "readinessKillMaxRandomSeconds": 300,
-      "livenessKillSeconds": 3
+      "readinessKillMaxRandomSeconds": 3,
+      "requestsKillSeconds": 5
     }
   },
   "FS": {
-    "yamlFilePath": ""
+    "yamlSourceFilePath": "/path/to/source/mapproxy.yaml",
+    "yamlDestinationFilePath": "/path/to/destination/mpaproxy.yaml"
   },
   "S3": {
     "accessKeyId": "minioadmin",
