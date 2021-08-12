@@ -5,23 +5,23 @@ import S3 from 'aws-sdk/clients/s3';
 import * as AWS from 'aws-sdk';
 import { container } from 'tsyringe';
 import { CredentialsOptions } from 'aws-sdk/lib/credentials';
-import { IConfig, IConfigProvider, IFSConfig, IS3Config } from '../interfaces';
+import { IConfig, IConfigProvider, IS3Config } from '../interfaces';
 import { Services } from '../constants';
 import { createLastUpdatedTimeJsonFile } from '../utils';
 
 export class S3Provider implements IConfigProvider {
   private readonly s3Config: IS3Config;
-  private readonly fsConfig: IFSConfig;
   private readonly config: IConfig;
   private readonly s3: S3;
   private readonly options: S3.GetObjectRequest;
   private readonly updatedTimeFileName: string;
+  private readonly yamlDestinationFilePath: string;
 
   public constructor() {
-    this.fsConfig = container.resolve(Services.FSCONFIG);
-    this.s3Config = container.resolve(Services.S3CONFIG);
     this.config = container.resolve(Services.CONFIG);
+    this.s3Config = container.resolve(Services.S3CONFIG);
     this.updatedTimeFileName = this.config.get<string>('updatedTimeFileName');
+    this.yamlDestinationFilePath = this.config.get<string>('yamlDestinationFilePath');
     const credentials: CredentialsOptions = {
       accessKeyId: this.s3Config.accessKeyId,
       secretAccessKey: this.s3Config.secretAccessKey,
@@ -60,7 +60,7 @@ export class S3Provider implements IConfigProvider {
     const resp = await this.s3.getObject(this.options).promise();
     const updatedDate = resp.LastModified;
     const content = resp.Body as Buffer;
-    const destination = this.fsConfig.yamlDestinationFilePath;
+    const destination = this.yamlDestinationFilePath;
     const updatedTimeJsonFileDest = join(dirname(destination), this.updatedTimeFileName);
 
     await fsp.writeFile(destination, content);

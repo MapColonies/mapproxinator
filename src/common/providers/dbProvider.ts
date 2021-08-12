@@ -3,21 +3,22 @@ import { promises as fsp } from 'fs';
 import { Pool, PoolConfig } from 'pg';
 import { container } from 'tsyringe';
 import { Services } from '../constants';
-import { IConfigProvider, IDBConfig, IConfigQueryResult, IFSConfig, IConfig } from '../interfaces';
+import { IConfigProvider, IDBConfig, IConfigQueryResult, IConfig } from '../interfaces';
 import { convertJsonToYaml, createLastUpdatedTimeJsonFile } from '../utils';
 
 export class DBProvider implements IConfigProvider {
   private readonly dbConfig: IDBConfig;
-  private readonly fsConfig: IFSConfig;
   private readonly config: IConfig;
   private readonly pool: Pool;
   private readonly updatedTimeFileName: string;
+  private readonly yamlDestinationFilePath: string;
 
   public constructor() {
     this.dbConfig = container.resolve(Services.DBCONFIG);
-    this.fsConfig = container.resolve<IFSConfig>(Services.FSCONFIG);
     this.config = container.resolve(Services.CONFIG);
     this.updatedTimeFileName = this.config.get<string>('updatedTimeFileName');
+    this.yamlDestinationFilePath = this.config.get<string>('yamlDestinationFilePath');
+
     const pgClientConfig: PoolConfig = {
       host: this.dbConfig.host,
       user: this.dbConfig.user,
@@ -48,7 +49,7 @@ export class DBProvider implements IConfigProvider {
       const jsonContent = queryResult.rows[0].data;
       const updatedTime = queryResult.rows[0].updated_time;
       const yamlContent = convertJsonToYaml(jsonContent);
-      const destination = this.fsConfig.yamlDestinationFilePath;
+      const destination = this.yamlDestinationFilePath;
       const updatedTimeJsonFileDest = join(dirname(destination), this.updatedTimeFileName);
 
       await fsp.writeFile(destination, yamlContent);

@@ -29,16 +29,17 @@
   "configProvider": "fs",
   "updatedTimeFileName": "updated_time.json",
   "updatedTimeJsonFilePath": "/path/to/existing/updated_time.json",
+  "yamlDestinationFilePath": "/path/to/destination/mapproxy.yaml",
   "poll": {
     "timeout": {
       "frequencyMilliseconds": 5000,
       "readinessKillMaxRandomSeconds": 300,
-      "requestsKillSeconds": 5
+      "requestsKillSeconds": 5,
+      "afterUpdateDelaySeconds": 0.5
     }
   },
   "FS": {
-    "yamlSourceFilePath": "/path/to/source/mapproxy.yaml",
-    "yamlDestinationFilePath": "/path/to/destination/mpaproxy.yaml"
+    "yamlSourceFilePath": "/path/to/source/mapproxy.yaml"
   },
   "S3": {
     "accessKeyId": "minioadmin",

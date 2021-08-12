@@ -25,6 +25,7 @@ export interface IPollConfig {
     frequencyMilliseconds: number;
     readinessKillMaxRandomSeconds: number;
     requestsKillSeconds: number;
+    afterUpdateDelaySeconds: number;
   };
 }
 
@@ -34,7 +35,6 @@ export interface IConfigQueryResult {
 }
 export interface IFSConfig {
   yamlSourceFilePath: string;
-  yamlDestinationFilePath: string;
 }
 
 export interface IS3Config {

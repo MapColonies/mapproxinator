@@ -59,10 +59,6 @@ describe('pollManager', () => {
     });
 
     it('should kill and restart readiness and not throw an error', async () => {
-      // const loggerMock = ({
-      //   error: jest.fn(),
-      //   info: jest.fn(),
-      // } as unknown) as Logger;
       getRandomIntegerStub.mockReturnValue(5);
       isUpdatedStub.mockResolvedValue(false);
 
@@ -70,7 +66,7 @@ describe('pollManager', () => {
       await expect(res).resolves.not.toThrow();
 
       expect(isUpdatedStub).toHaveBeenCalledTimes(1);
-      //expect(delayStub).toHaveBeenCalledTimes(3);
+      expect(delayStub).toHaveBeenCalledTimes(3);
       expect(getRandomIntegerStub).toHaveBeenCalledTimes(1);
       expect(readinessKillStub).toHaveBeenCalledTimes(1);
       expect(createOrUpdateConfigFileStub).toHaveBeenCalledTimes(1);

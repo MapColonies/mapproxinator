@@ -18,7 +18,8 @@ export class PollManager {
   public async poll(): Promise<void> {
     const frequencyTimeOutMS = this.pollCofig.timeout.frequencyMilliseconds;
     const requestsKillSeconds = this.pollCofig.timeout.requestsKillSeconds;
-    const afterUpdateDelaySeconds = 0.1;
+    const afterUpdateDelaySeconds = this.pollCofig.timeout.afterUpdateDelaySeconds;
+
     try {
       this.logger.info(`polling attempt`);
       if (!(await this.watcher.isUpdated())) {
