@@ -47,9 +47,18 @@
   "updatedTimeJsonFilePath": "UPDATED_TIME_JSON_FILE_PATH",
   "poll": {
     "timeout": {
-      "frequencyMilliseconds": "POLL_TIMEOUT_FREQUENCY_MS",
-      "readinessKillMaxRandomSeconds": "POLL_TIMEOUT_READINESS_KILL_MAX_RND_SECONDS",
-      "requestsKillSeconds": "POLL_TIMEOUT_REQUESTS_KILL_SECONDS"
+      "frequencyMilliseconds": {
+        "__name": "POLL_TIMEOUT_FREQUENCY_MS",
+        "__format": "number"
+      },
+      "readinessKillMaxRandomSeconds": {
+        "__name": "POLL_TIMEOUT_READINESS_KILL_MAX_RND_SECONDS",
+        "__format": "number"
+      },
+      "requestsKillSeconds": {
+        "__name": "POLL_TIMEOUT_REQUESTS_KILL_SECONDS",
+        "__format": "number"
+      }
     }
   },
   "FS": {

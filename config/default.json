@@ -32,7 +32,7 @@
   "poll": {
     "timeout": {
       "frequencyMilliseconds": 5000,
-      "readinessKillMaxRandomSeconds": 3,
+      "readinessKillMaxRandomSeconds": 300,
       "requestsKillSeconds": 5
     }
   },
