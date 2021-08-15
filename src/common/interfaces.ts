@@ -13,6 +13,7 @@ export interface OpenApiConfig {
 
 export interface IConfigProvider {
   getLastUpdatedtime: () => Promise<Date>;
+  createOrUpdateConfigFile: () => Promise<void>;
 }
 
 export interface IUpdatedTimeFileContentResult {
@@ -23,12 +24,17 @@ export interface IPollConfig {
   timeout: {
     frequencyMilliseconds: number;
     readinessKillMaxRandomSeconds: number;
-    livenessKillSeconds: number;
+    requestsKillSeconds: number;
+    afterUpdateDelaySeconds: number;
   };
 }
 
+export interface IConfigQueryResult {
+  data: Record<string, unknown>;
+  updated_time: Date;
+}
 export interface IFSConfig {
-  yamlFilePath: string;
+  yamlSourceFilePath: string;
 }
 
 export interface IS3Config {
@@ -60,4 +66,8 @@ export interface IDBConfig {
 export interface IDBColumns {
   data: string;
   updatedTime: string;
+}
+
+export interface IUpdatedTimeFileContent {
+  updatedTime: Date;
 }

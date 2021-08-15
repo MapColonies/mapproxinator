@@ -19,7 +19,7 @@ export class Watcher {
 
   public async isUpdated(): Promise<boolean> {
     // gets the last updated time from the saved file
-    this.lastUpdatedTime = this.lastUpdatedTime ?? (await this.getLastUpdatedTimeFromFile());
+    this.lastUpdatedTime = await this.getLastUpdatedTimeFromFile();
     // gets the last updated time from provider
     const lastUpdatedTimeFromProvider = await this.getLastUpdatedTimeFromProvider();
     const isDateEquals = compareDates(this.lastUpdatedTime, lastUpdatedTimeFromProvider);

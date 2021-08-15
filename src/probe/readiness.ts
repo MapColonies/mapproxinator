@@ -15,13 +15,17 @@ export class Readiness {
     if (this.isReady) {
       return Promise.resolve();
     } else {
-      // throw new HealthCheckError('Error', 'Readiness has been terminated');
       throw new HealthCheckError('readiness has been terminated.', []);
     }
   };
 
   public kill = (): void => {
-    this.logger.debug(`killing service readiness.`);
+    this.logger.info(`killing service readiness.`);
     this.isReady = false;
+  };
+
+  public start = (): void => {
+    this.logger.info(`starting service readiness.`);
+    this.isReady = true;
   };
 }

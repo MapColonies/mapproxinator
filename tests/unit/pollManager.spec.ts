@@ -3,35 +3,38 @@ import { Logger } from '@map-colonies/js-logger';
 import { registerTestValues } from '../integration/testContainerConfig';
 import { PollManager } from '../../src/pollManager';
 import { Watcher } from '../../src/watcher';
-import { Liveness } from '../../src/probe/liveness';
 import { Readiness } from '../../src/probe/readiness';
 import { Services } from '../../src/common/constants';
+import { IConfigProvider } from '../../src/common/interfaces';
 
 let pollManager: PollManager;
 let watcher: Watcher;
-let liveness: Liveness;
 let readiness: Readiness;
+// eslint-disable-next-line @typescript-eslint/naming-convention
+let configProvider: IConfigProvider;
 let getRandomIntegerStub: jest.SpyInstance;
 let isUpdatedStub: jest.SpyInstance;
 let delayStub: jest.SpyInstance;
-let livenessKillStub: jest.SpyInstance;
 let readinessKillStub: jest.SpyInstance;
+let readinessStartStub: jest.SpyInstance;
+let createOrUpdateConfigFileStub: jest.SpyInstance;
 
 describe('pollManager', () => {
   beforeAll(() => {
     registerTestValues();
     pollManager = container.resolve(PollManager);
     watcher = container.resolve(Watcher);
-    liveness = container.resolve(Liveness);
     readiness = container.resolve(Readiness);
+    configProvider = container.resolve(Services.CONFIGPROVIDER);
   });
 
   beforeEach(() => {
     getRandomIntegerStub = jest.spyOn(pollManager, 'getRandomInteger');
     isUpdatedStub = jest.spyOn(watcher, 'isUpdated');
     delayStub = jest.spyOn(pollManager, 'delay').mockImplementation(async () => Promise.resolve());
-    livenessKillStub = jest.spyOn(liveness, 'kill');
     readinessKillStub = jest.spyOn(readiness, 'kill');
+    readinessStartStub = jest.spyOn(readiness, 'start');
+    createOrUpdateConfigFileStub = jest.spyOn(configProvider, 'createOrUpdateConfigFile').mockResolvedValue(undefined);
     jest.useFakeTimers();
   });
 
@@ -50,11 +53,12 @@ describe('pollManager', () => {
       expect(isUpdatedStub).toHaveBeenCalled();
       expect(delayStub).toHaveBeenCalledTimes(0);
       expect(getRandomIntegerStub).toHaveBeenCalledTimes(0);
-      expect(livenessKillStub).toHaveBeenCalledTimes(0);
       expect(readinessKillStub).toHaveBeenCalledTimes(0);
+      expect(createOrUpdateConfigFileStub).toHaveBeenCalledTimes(0);
+      expect(readinessStartStub).toHaveBeenCalledTimes(0);
     });
 
-    it('should kill liveness and readiness and not throw an error', async () => {
+    it('should kill and restart readiness and not throw an error', async () => {
       getRandomIntegerStub.mockReturnValue(5);
       isUpdatedStub.mockResolvedValue(false);
 
@@ -62,10 +66,11 @@ describe('pollManager', () => {
       await expect(res).resolves.not.toThrow();
 
       expect(isUpdatedStub).toHaveBeenCalledTimes(1);
-      expect(delayStub).toHaveBeenCalledTimes(2);
+      expect(delayStub).toHaveBeenCalledTimes(3);
       expect(getRandomIntegerStub).toHaveBeenCalledTimes(1);
-      expect(livenessKillStub).toHaveBeenCalledTimes(1);
       expect(readinessKillStub).toHaveBeenCalledTimes(1);
+      expect(createOrUpdateConfigFileStub).toHaveBeenCalledTimes(1);
+      expect(readinessStartStub).toHaveBeenCalledTimes(1);
     });
 
     it('should reject and not to throw an error due to poll date error (watcher)', async () => {
@@ -73,7 +78,7 @@ describe('pollManager', () => {
         error: jest.fn(),
         info: jest.fn(),
       } as unknown) as Logger;
-      pollManager = new PollManager(loggerMock, container.resolve(Services.POLLCONFIG), watcher, liveness, readiness);
+      pollManager = new PollManager(loggerMock, container.resolve(Services.POLLCONFIG), configProvider, watcher, readiness);
       getRandomIntegerStub.mockReturnValue(5);
       isUpdatedStub.mockRejectedValue(new Error('Error1'));
 
@@ -83,8 +88,9 @@ describe('pollManager', () => {
       expect(isUpdatedStub).toHaveBeenCalledTimes(1);
       expect(delayStub).toHaveBeenCalledTimes(0);
       expect(getRandomIntegerStub).toHaveBeenCalledTimes(0);
-      expect(livenessKillStub).toHaveBeenCalledTimes(0);
       expect(readinessKillStub).toHaveBeenCalledTimes(0);
+      expect(createOrUpdateConfigFileStub).toHaveBeenCalledTimes(0);
+      expect(readinessStartStub).toHaveBeenCalledTimes(0);
     });
 
     describe('getRandomInteger', () => {
