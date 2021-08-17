@@ -86,11 +86,11 @@
     "password": "DB_PASSWORD",
     "database": "DB_NAME",
     "enableSslAuth": "DB_SSL_ENABLE",
-    "rejectUnauthorized": "DB_SSL_REJECT_UNAUTHORIZED",
+    "rejectUnauthorized": "DB_REJECT_UNAUTHORIZED",
     "sslPaths": {
-      "ca": "DB_SSL_CA",
-      "key": "DB_SSL_KEY",
-      "cert": "DB_SSL_CERT"
+      "ca": "DB_SSL_PATH_CA",
+      "key": "DB_SSL_PATH_KEY",
+      "cert": "DB_SSL_PATH_CERT"
     }
   }
 }
