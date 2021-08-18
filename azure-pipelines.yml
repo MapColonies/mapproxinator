@@ -36,7 +36,7 @@ stages:
         # the path to the docker file Default is [root Folder]/DockerFile
         dockerfilePaths:
         - name: mapproxinator
-          path: '$(Build.SourcesDirectory)/Dockerfile'e'
+          path: '$(Build.SourcesDirectory)/Dockerfile'
         # the url of the helm registry Default [ACR non prod registry url]
         # helmrRegistryUrl:
         # the path to the helm folder. Default is [root Folder]/helm
