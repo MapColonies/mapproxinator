@@ -31,16 +31,15 @@ stages:
     - checkout: self
     - template: azure-pipelines/buildAndPush.yaml@devops
       parameters:
-        dockerfilePaths:
-        - name: mapproxinator
-          path: '$(Build.SourcesDirectory)/Dockerfile'
         # the service connection name for the docker registry Default is ACR
         # dockerRegistryServiceConnection:
         # the path to the docker file Default is [root Folder]/DockerFile
-        # dockerfilePath:
+        dockerfilePaths:
+        - name: mapproxinator
+          path: '$(Build.SourcesDirectory)/Dockerfile'e'
         # the url of the helm registry Default [ACR non prod registry url]
         # helmrRegistryUrl:
         # the path to the helm folder. Default is [root Folder]/helm
         # helmFolderPath:
         # the name of the app. the name of the image and the name of the chart will be the same.
-        appName: $(Build.Repository.Name)
+        appName: mapproxinator
