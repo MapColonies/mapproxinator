@@ -6,7 +6,6 @@ info:
   license:
     name: MIT
     url: https://opensource.org/licenses/MIT
-
 paths:
   /resourceName:
     get:
@@ -15,7 +14,7 @@ paths:
         - resourceName
       summary: gets the resource
       responses:
-        200:
+        '200':
           description: OK
           content:
             application/json:
@@ -27,13 +26,13 @@ paths:
         - resourceName
       summary: creates a new record of type resource
       responses:
-        201:
+        '201':
           description: created
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/resource'
-        400:
+        '400':
           description: Bad Request
           content:
             application/json:
