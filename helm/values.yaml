@@ -4,6 +4,25 @@ global:
   metrics: {}
   environment: {}
 
+authentication:
+  ca:
+    enabled: false
+    useExternal: false
+    externalSecretName: ""
+  ssl:
+    enabled: false
+    useExternal: false
+    externalSecretName: ""
+
+# ====================================================================================================
+# Local certificate files variables
+# ====================================================================================================
+
+local:
+  certs:
+    ca: "certs/ca.crt"
+    ssl: "certs/openssl.cnf"
+
 enabled: true
 environment: development
 replicaCount: 1
@@ -34,7 +53,7 @@ env:
     url: http://localhost:55681/v1/metrics
 
 resources:
-  enabled: false
+  enabled: true
   value:
     limits:
       cpu: 100m
