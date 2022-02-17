@@ -85,8 +85,14 @@
     "user": "DB_USER",
     "password": "DB_PASSWORD",
     "database": "DB_NAME",
-    "enableSslAuth": "DB_SSL_ENABLE",
-    "rejectUnauthorized": "DB_REJECT_UNAUTHORIZED",
+    "sslEnabled": {
+      "__name": "DB_SSL_ENABLE",
+      "__format": "boolean"
+    },
+    "rejectUnauthorized": {
+      "__name": "DB_SSL_REJECT_UNAUTHORIZED",
+      "__format": "boolean"
+    },
     "sslPaths": {
       "ca": "DB_SSL_PATH_CA",
       "key": "DB_SSL_PATH_KEY",

@@ -1,5 +1,5 @@
 import { dirname, join } from 'path';
-import { promises as fsp } from 'fs';
+import { promises as fsp, readFileSync } from 'fs';
 import { Pool, PoolConfig } from 'pg';
 import { container } from 'tsyringe';
 import { Services } from '../constants';
@@ -23,9 +23,17 @@ export class DBProvider implements IConfigProvider {
       host: this.dbConfig.host,
       user: this.dbConfig.user,
       database: this.dbConfig.database,
-      password: this.dbConfig.password,
+      password: this.dbConfig.password ? this.dbConfig.password : undefined,
       port: this.dbConfig.port,
     };
+    if (this.dbConfig.sslEnabled) {
+      pgClientConfig.ssl = {
+        rejectUnauthorized: this.dbConfig.rejectUnauthorized,
+        key: readFileSync(this.dbConfig.sslPaths.key),
+        cert: readFileSync(this.dbConfig.sslPaths.cert),
+        ca: readFileSync(this.dbConfig.sslPaths.ca),
+      };
+    }
     this.pool = new Pool(pgClientConfig);
   }
 
