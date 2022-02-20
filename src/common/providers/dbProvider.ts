@@ -1,6 +1,6 @@
 import { dirname, join } from 'path';
 import { promises as fsp, readFileSync } from 'fs';
-import { Pool, PoolConfig } from 'pg';
+import { Pool, PoolClient, PoolConfig } from 'pg';
 import { container } from 'tsyringe';
 import { Services } from '../constants';
 import { IConfigProvider, IDBConfig, IConfigQueryResult, IConfig } from '../interfaces';
@@ -35,11 +35,10 @@ export class DBProvider implements IConfigProvider {
       };
     }
     this.pool = new Pool(pgClientConfig);
-    this.pool.on('connect', (client) => client.query(`SET search_path TO "${this.dbConfig.schema}",public`));
   }
 
   public async getLastUpdatedtime(): Promise<Date> {
-    const client = await this.pool.connect();
+    const client = await this.connectToDb();
     try {
       const query = `SELECT ${this.dbConfig.columns.updatedTime} FROM ${this.dbConfig.table} ORDER BY ${this.dbConfig.columns.updatedTime} DESC limit 1`;
       const result = await client.query<IConfigQueryResult>(query);
@@ -51,7 +50,7 @@ export class DBProvider implements IConfigProvider {
   }
 
   public async createOrUpdateConfigFile(): Promise<void> {
-    const pgClient = await this.pool.connect();
+    const pgClient = await this.connectToDb();
     try {
       const query = `SELECT * FROM ${this.dbConfig.table} ORDER BY ${this.dbConfig.columns.updatedTime} DESC limit 1`;
       const queryResult = await pgClient.query<IConfigQueryResult>(query);
@@ -66,5 +65,11 @@ export class DBProvider implements IConfigProvider {
     } finally {
       pgClient.release();
     }
+  }
+
+  private async connectToDb(): Promise<PoolClient> {
+    const pgClient = await this.pool.connect();
+    await pgClient.query(`SET search_path TO "${this.dbConfig.schema}",public`);
+    return pgClient;
   }
 }
