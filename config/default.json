@@ -53,7 +53,8 @@
     "host": "localhost",
     "user": "postgres",
     "password": "postgres",
-    "database": "mapproxy-config-dev",
+    "database": "raster",
+    "schema": "MapproxyConfig",
     "port": 5432,
     "table": "config",
     "columns": {
