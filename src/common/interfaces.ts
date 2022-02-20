@@ -50,6 +50,7 @@ export interface IDBConfig {
   host: string;
   user: string;
   database: string;
+  schema: string;
   password: string;
   port: number;
   table: string;

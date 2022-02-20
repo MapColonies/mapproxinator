@@ -35,6 +35,7 @@ export class DBProvider implements IConfigProvider {
       };
     }
     this.pool = new Pool(pgClientConfig);
+    this.pool.on('connect', (client) => client.query(`SET search_path TO "${this.dbConfig.schema}",public`));
   }
 
   public async getLastUpdatedtime(): Promise<Date> {
