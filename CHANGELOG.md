@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.0.4](https://github.com/MapColonies/mapproxinator/compare/v1.0.3...v1.0.4) (2022-12-27)
+
+
+### Bug Fixes
+
+* run fix audit command ([#7](https://github.com/MapColonies/mapproxinator/issues/7)) ([af6d8fb](https://github.com/MapColonies/mapproxinator/commit/af6d8fb61187705f97158551d1ab6a740593bc72))
+
 ### [1.0.3](https://github.com/MapColonies/mapproxinator/compare/v1.0.2...v1.0.3) (2022-02-20)
 
 
