@@ -25,11 +25,11 @@
       }
     }
   },
-  "initMode": false,
-  "configProvider": "DB",
+  "initMode": true,
+  "configProvider": "fs",
   "updatedTimeFileName": "updated_time.json",
-  "updatedTimeJsonFilePath": "/home/razbro/Repos/mapproxinator/updated_time.json",
-  "yamlDestinationFilePath": "/home/razbro/Repos/mapproxinator/mapproxy.yaml",
+  "updatedTimeJsonFilePath": "/path/to/existing/updated_time.json",
+  "yamlDestinationFilePath": "/path/to/destination/mapproxy.yaml",
   "poll": {
     "timeout": {
       "frequencyMilliseconds": 5000,
@@ -50,10 +50,10 @@
     "sslEnabled": false
   },
   "DB": {
-    "host": "10.0.4.4",
+    "host": "localhost",
     "user": "postgres",
-    "password": "Libot4allnonprod",
-    "database": "raster-dev",
+    "password": "postgres",
+    "database": "raster",
     "schema": "MapproxyConfig",
     "port": 5432,
     "table": "config",
