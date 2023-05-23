@@ -14,7 +14,10 @@ import { IConfig } from './common/interfaces';
 export class ServerBuilder {
   private readonly serverInstance: express.Application;
 
-  public constructor(@inject(Services.CONFIG) private readonly config: IConfig, @inject(Services.LOGGER) private readonly logger: Logger) {
+  public constructor(
+    @inject(Services.CONFIG) private readonly config: IConfig, 
+    @inject(Services.LOGGER) private readonly logger: Logger
+  ) {
     this.serverInstance = express();
   }
 
@@ -27,7 +30,10 @@ export class ServerBuilder {
   }
 
   private buildDocsRoutes(): void {
-    const openapiRouter = new OpenapiViewerRouter(this.config.get<OpenapiRouterConfig>('openapiConfig'));
+    const openapiRouter = new OpenapiViewerRouter({
+      ...this.config.get<OpenapiRouterConfig>('openapiConfig'),
+      filePathOrSpec: this.config.get<string>('openapiConfig.filePath'),
+    });
     openapiRouter.setup();
     this.serverInstance.use(this.config.get<string>('openapiConfig.basePath'), openapiRouter.getRouter());
   }

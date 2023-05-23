@@ -9,7 +9,6 @@ export enum Services {
   LOGGER = 'ILogger',
   CONFIG = 'IConfig',
   TRACER = 'TRACER',
-  METER = 'METER',
   PROBE = 'PROBE',
   DBCONFIG = 'DB',
   S3CONFIG = 'S3',
