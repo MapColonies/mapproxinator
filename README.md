@@ -12,7 +12,7 @@ this service has two main modes: Init mode - that acts as init container. side-c
 
 When set to 'true', creates the config file and initializes it. retrives mapproxy configuration and upadated time files from the provider.
 
-acts as a init-container.
+acts as an init-container.
 
 When set to 'false', starts the server and the process of constantly updating mapproxy.yaml. acts as a side-car container.
 
