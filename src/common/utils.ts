@@ -26,8 +26,7 @@ export function convertJsonToYaml(json: Record<string, unknown>): string {
     const yamlContent: string = dump(json, { noArrayIndent: true });
     return yamlContent;
   } catch (error) {
-    let message;
-    message = error instanceof Error ? error.message : JSON.stringify(error);
+    const message = error instanceof Error ? error.message : JSON.stringify(error);
     throw new Error(message);
   }
 }
