@@ -15,7 +15,7 @@ function registerExternalValues(): void {
   const fsConfig = config.get(Services.FSCONFIG);
   const dbConfig = config.get(Services.DBCONFIG);
   const s3Config = config.get(Services.S3CONFIG);
-  const logger = jsLogger({ ...loggerConfig, prettyPrint: loggerConfig.prettyPrint, mixin: getOtelMixin()});
+  const logger = jsLogger({ ...loggerConfig, prettyPrint: loggerConfig.prettyPrint, mixin: getOtelMixin() });
   container.register(Services.CONFIG, { useValue: config });
   container.register(Services.LOGGER, { useValue: logger });
   container.register(Services.FSCONFIG, { useValue: fsConfig });
