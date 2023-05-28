@@ -32,6 +32,7 @@ const startServer = (): void => {
   const healthCheck = container.resolve(Liveness).probe;
   const readyCheck = container.resolve(Readiness).probe;
   const server = createTerminus(createServer(app), {
+    // eslint-disable-next-line @typescript-eslint/naming-convention
     healthChecks: { '/liveness': healthCheck, '/readiness': readyCheck, onSignal: container.resolve('onSignal') },
   });
 

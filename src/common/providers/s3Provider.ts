@@ -51,9 +51,11 @@ export class S3Provider implements IConfigProvider {
       // Reads file from the bucket
       const lastUpdatedDate = (await this.s3.getObject(params).promise()).LastModified;
       return lastUpdatedDate as Date;
-    } catch (error: any) {
-      throw new Error(error);
-    }
+    } catch (error) {
+      let message
+      if (error instanceof Error) message = error.message
+      else message = String(error)
+      throw new Error(message);    }
   }
 
   public async createOrUpdateConfigFile(): Promise<void> {

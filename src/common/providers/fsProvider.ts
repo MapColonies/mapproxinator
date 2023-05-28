@@ -21,8 +21,11 @@ export class FSProvider implements IConfigProvider {
     try {
       const lastUpdatedDate = (await fsp.stat(this.fsConfig.yamlSourceFilePath)).mtime;
       return lastUpdatedDate;
-    } catch (error: any) {
-      throw new Error(error);
+    } catch (error) {
+      let message
+      if (error instanceof Error) message = error.message
+      else message = String(error)
+      throw new Error(message);
     }
   }
 
