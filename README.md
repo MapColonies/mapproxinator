@@ -1,60 +1,108 @@
-# Map Colonies typescript service template
+# Mapproxinator
 
-----------------------------------
+This service is responsible to keep the latest mapproxy.yaml accessible.
 
-![badge-alerts-lgtm](https://img.shields.io/lgtm/alerts/github/MapColonies/ts-server-boilerplate?style=for-the-badge)
+it is doing it by checking for the last version in provider ('fs'/'db'/'s3') regularly and updates it if needed.
 
-![grade-badge-lgtm](https://img.shields.io/lgtm/grade/javascript/github/MapColonies/ts-server-boilerplate?style=for-the-badge)
+this service has two main modes: Init mode - that acts as init container. side-car mode - that keeps the file updated at all time.
 
-![snyk](https://img.shields.io/snyk/vulnerabilities/github/MapColonies/ts-server-boilerplate?style=for-the-badge)
+## Configuration
 
-----------------------------------
+`INIT_MODE` initiation of the service , *default to 'true'*.
 
-This is a basic repo template for building new MapColonies web services in Typescript.
+When set to 'true', creates the config file and initializes it. retrives mapproxy configuration and upadated time files from the provider.
 
-### Template Features:
+acts as an init-container.
 
-- eslint configuration by [@map-colonies/eslint-config](https://github.com/MapColonies/eslint-config)
+When set to 'false', starts the server and the process of constantly updating mapproxy.yaml. acts as a side-car container.
 
-- prettier configuration by [@map-colonies/prettier-config](https://github.com/MapColonies/prettier-config)
+`SERVER_PORT` set the server port number , *default to '8080'*
 
-- jest
+`CONFIG_PROVIDER` **available values: 'fs', 's3' or 'db'.** default fs.
 
-- .nvmrc
+ determined where the mapproxy.yaml file is stored. no default value
+ 
+  **if set to 'fs'** - changes will apply directly 
+to yaml file that declared in `MAPPROXY_YAML_FILEPATH`.
 
-- Multi stage producton-ready Dockerfile
+ **if set to 's3'** -  changes will directly apply to yaml file that is stored in s3 defined bucket.
 
-- commitlint
+ **if set to 'db'** - changes will directly apply to the database.
 
-- git hooks
+`UPDATED_TIME_JSON_FILE_PATH` path to file that saves the last update of mapproxy.yaml date.
 
-- logging by [@map-colonies/js-logger](https://github.com/MapColonies/js-logger)
+`YAML_DESTINATION_FILE_PATH` path to mapproxy.yaml file.
 
-- OpenAPI request validation
+`POLL_TIMEOUT_FREQUENCY_MS` time to check wheather mapproxy.yaml has changed, *default to '5000' miliseconds (5min)*
 
-- config load with [node-config](https://www.npmjs.com/package/node-config)
+`POLL_TIMEOUT_READINESS_KILL_MAX_RND_SECONDS` readiness kill time, *default to '300'*
 
-- Tracing and metrics by [@map-colonies/telemetry](https://github.com/MapColonies/telemetry)
+`POLL_TIMEOUT_REQUESTS_KILL_SECONDS` *default to '5'*
 
-- github templates
+`POLL_TIMEOUT_AFTER_UPDATE_DELAY_SECONDS` *default to '0.5'*
 
-- bug report
 
-- feature request
+<br>
+<br>
 
-- pull request
+**FS Configuration**
 
-- github actions
+***
+if `CONFIG_PROVIDER` is set to 'fs' make sure to declare next envs
+***
 
-- on pull_request
+`FS_YAML_SOURCE_FILE_PATH` set the path to the 'mapproxy.yaml' yaml file, no default value.
 
-- LGTM
 
-- test
+<br>
+<br>
 
-- lint
+**S3 Object Storage Configuration**
 
-- snyk
+***
+if `CONFIG_PROVIDER` is set to 's3' make sure to declare next envs
+***
+
+`S3_ACCESS_KEY_ID` S3 access key, *default to 'minioadmin'*
+
+`S3_SECRET_ACCESS_KEY` S3 secret access key, *default to 'minioadmin'*
+
+`S3_ENDPOINT_URL` S3 endpoint URL, *default to 'http://localhost:9000'*
+
+`S3_BUCKET` S3 bucket name, no default valuenpm
+
+`S3_SSL_ENABLED` S3 enable SSL, *deafult to 'false'*
+
+<br>
+<br>
+
+**DB Configuration**
+
+***
+if `CONFIG_PROVIDER` is set to 'db' make sure to declare next envs
+****
+
+`DB_HOST` set the server host , deafult to 'localhost'
+
+`DB_USER` set the database username, default to 'postgres'
+
+`DB_PASSWORD` set the database password, default to 'postgres'
+
+`DB_NAME` set the database name
+
+`DB_PORT` set the database port, default to 5432
+
+`DB_SSL_ENABLE` set to true if you wished to use database ssl.
+default to false
+
+`DB_SSL_REJECT_UNAUTHORIZED` if true, the server certificate is verified against the list of supplied CAs
+
+`DB_SSL_CA` set the path to the CA file
+
+`DB_SSL_KEY` set the path to the KEY file
+
+`DB_SSL_CERT` set the path to the CERT file
+
 
 ## API
 Checkout the OpenAPI spec [here](/openapi3.yaml)
@@ -120,3 +168,4 @@ To only run integration tests:
 ```bash
 npm run test:integration
 ```
+

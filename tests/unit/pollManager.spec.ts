@@ -74,10 +74,10 @@ describe('pollManager', () => {
     });
 
     it('should reject and not to throw an error due to poll date error (watcher)', async () => {
-      const loggerMock = ({
+      const loggerMock = {
         error: jest.fn(),
         info: jest.fn(),
-      } as unknown) as Logger;
+      } as unknown as Logger;
       pollManager = new PollManager(loggerMock, container.resolve(Services.POLLCONFIG), configProvider, watcher, readiness);
       getRandomIntegerStub.mockReturnValue(5);
       isUpdatedStub.mockRejectedValue(new Error('Error1'));
