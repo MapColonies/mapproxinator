@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.0.6](https://github.com/MapColonies/mapproxinator/compare/v1.0.5...v1.0.6) (2023-05-28)
+
+
+### Bug Fixes
+
+* fix eslint and pretteir new notes. updated description in package.json ([eb76957](https://github.com/MapColonies/mapproxinator/commit/eb7695712a5fba2c72a171886e8bf7a3a508e0ab))
+* fix eslint changed let to const ([d2bb9f6](https://github.com/MapColonies/mapproxinator/commit/d2bb9f6c1204f64ad87c7575231e573d0880472d))
+* fix eslint notes ([0cf9b70](https://github.com/MapColonies/mapproxinator/commit/0cf9b70671d3abb05f01848bab261c8bca0c8aa4))
+* fix prettier notes ([95a2e1f](https://github.com/MapColonies/mapproxinator/commit/95a2e1f8a5e3f2b9529d8fdd13ee81b9b6808a39))
+* fix prettier notes ([a546f03](https://github.com/MapColonies/mapproxinator/commit/a546f03f13c0708e8cd2f9bd258a04fb2f01f5ae))
+* set default json back to default value ([deed598](https://github.com/MapColonies/mapproxinator/commit/deed5984d8f6567e6aa19b4588a14f50f775116d))
+
 ### [1.0.5](https://github.com/MapColonies/mapproxinator/compare/v1.0.4...v1.0.5) (2022-12-27)
 
 ### [1.0.4](https://github.com/MapColonies/mapproxinator/compare/v1.0.3...v1.0.4) (2022-12-27)
