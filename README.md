@@ -58,7 +58,7 @@ This is a basic repo template for building new MapColonies web services in Types
 
 ## Configuration
 
-`INIT_MODE` boolean - inition of the service , *default to 'true'*.
+`INIT_MODE` boolean - initiation of the service , *default to 'true'*.
 
 When set to 'true', creates the config file and initializes it. retrives mapproxy configuration and upadated time files from the provider.
 
