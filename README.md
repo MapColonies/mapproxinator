@@ -1,4 +1,4 @@
-# Map Colonies typescript service template
+# Mapproxinator
 
 ----------------------------------
 
@@ -10,7 +10,7 @@
 
 ----------------------------------
 
-This is a basic repo template for building new MapColonies web services in Typescript.
+This is a service which provides the most updated mapproxy.yaml file.
 
 ### Template Features:
 
@@ -62,7 +62,9 @@ This is a basic repo template for building new MapColonies web services in Types
 
 When set to 'true', creates the config file and initializes it. retrives mapproxy configuration and upadated time files from the provider.
 
-When set to 'false', starts the server and the process.
+acts as a init-container.
+
+When set to 'false', starts the server and the process of constantly updating mapproxy.yaml. acts as a side-car container.
 
 `SERVER_PORT` set the server port number , *default to '8080'*
 
