@@ -1,64 +1,14 @@
 # Mapproxinator
 
-----------------------------------
+This service is responsible to keep the latest mapproxy.yaml accessible.
 
-![badge-alerts-lgtm](https://img.shields.io/lgtm/alerts/github/MapColonies/ts-server-boilerplate?style=for-the-badge)
+it is doing it by checking for the last version in provider ('fs'/'db'/'s3') regularly and updates it if needed.
 
-![grade-badge-lgtm](https://img.shields.io/lgtm/grade/javascript/github/MapColonies/ts-server-boilerplate?style=for-the-badge)
-
-![snyk](https://img.shields.io/snyk/vulnerabilities/github/MapColonies/ts-server-boilerplate?style=for-the-badge)
-
-----------------------------------
-
-This is a service which provides the most updated mapproxy.yaml file.
-
-### Template Features:
-
-- eslint configuration by [@map-colonies/eslint-config](https://github.com/MapColonies/eslint-config)
-
-- prettier configuration by [@map-colonies/prettier-config](https://github.com/MapColonies/prettier-config)
-
-- jest
-
-- .nvmrc
-
-- Multi stage producton-ready Dockerfile
-
-- commitlint
-
-- git hooks
-
-- logging by [@map-colonies/js-logger](https://github.com/MapColonies/js-logger)
-
-- OpenAPI request validation
-
-- config load with [node-config](https://www.npmjs.com/package/node-config)
-
-- Tracing and metrics by [@map-colonies/telemetry](https://github.com/MapColonies/telemetry)
-
-- github templates
-
-- bug report
-
-- feature request
-
-- pull request
-
-- github actions
-
-- on pull_request
-
-- LGTM
-
-- test
-
-- lint
-
-- snyk
+this service has two main modes: Init mode - that acts as init container. side-car mode - that keeps the file updated at all time.
 
 ## Configuration
 
-`INIT_MODE` boolean - initiation of the service , *default to 'true'*.
+`INIT_MODE` initiation of the service , *default to 'true'*.
 
 When set to 'true', creates the config file and initializes it. retrives mapproxy configuration and upadated time files from the provider.
 
