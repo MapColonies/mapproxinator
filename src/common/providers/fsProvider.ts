@@ -23,7 +23,7 @@ export class FSProvider implements IConfigProvider {
       return lastUpdatedDate;
     } catch (error) {
       let message;
-      message = error instanceof Error ? error.message : (message = String(error));
+      message = error instanceof Error ? error.message : JSON.stringify(error);
       throw new Error(message);
     }
   }

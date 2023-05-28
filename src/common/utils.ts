@@ -27,7 +27,7 @@ export function convertJsonToYaml(json: Record<string, unknown>): string {
     return yamlContent;
   } catch (error) {
     let message;
-    message = error instanceof Error ? error.message : (message = String(error));
+    message = error instanceof Error ? error.message : JSON.stringify(error);
     throw new Error(message);
   }
 }
