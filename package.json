@@ -1,6 +1,6 @@
 {
   "name": "mapproxinator",
-  "version": "1.0.8",
+  "version": "1.0.9",
   "description": "This is a service that updates mapproxy.yaml file consistently",
   "main": "./src/index.ts",
   "scripts": {
