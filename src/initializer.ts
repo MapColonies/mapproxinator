@@ -20,7 +20,9 @@ export class Initializer {
       const serviceProvider = String(this.config.get('configProvider')).toUpperCase();
       this.logger.info(`mapproxy configuration and upadated time files were succesfully retrieved from ${serviceProvider}`);
     } catch (error) {
-      this.logger.error(`failed retrieved configuration files, error: ${(error as Error).message}`);
+      const msg = `failed retrieved configuration files, error: ${(error as Error).message}`
+      this.logger.error(msg);
+      throw new Error(msg);
     }
   }
 }
