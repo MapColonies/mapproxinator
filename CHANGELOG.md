@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.0.10](https://github.com/MapColonies/mapproxinator/compare/v1.0.9...v1.0.10) (2023-10-10)
+
+
+### Bug Fixes
+
+* throw error if failed to provide config files (MAPCO-3567) ([#14](https://github.com/MapColonies/mapproxinator/issues/14)) ([12be070](https://github.com/MapColonies/mapproxinator/commit/12be070a36b02eb8d156c9d7dbab7c2269b4c96c))
+
 ### [1.0.9](https://github.com/MapColonies/mapproxinator/compare/v1.0.8...v1.0.9) (2023-05-29)
 
 ### [1.0.8](https://github.com/MapColonies/mapproxinator/compare/v1.0.5...v1.0.8) (2023-05-29)
