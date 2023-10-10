@@ -12,6 +12,7 @@ export class Initializer {
     this.logger = container.resolve(Services.LOGGER);
   }
 
+  
   public async init(): Promise<void> {
     try {
       this.logger.info('initializing configuration');
@@ -20,9 +21,8 @@ export class Initializer {
       const serviceProvider = String(this.config.get('configProvider')).toUpperCase();
       this.logger.info(`mapproxy configuration and upadated time files were succesfully retrieved from ${serviceProvider}`);
     } catch (error) {
-      const msg = `failed retrieved configuration files, error: ${(error as Error).message}`
-      this.logger.error(msg);
-      throw new Error(msg);
+      this.logger.error(`failed retrieved configuration files, error: ${(error as Error).message}`);
+      throw error;
     }
   }
 }
