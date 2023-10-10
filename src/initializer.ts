@@ -12,7 +12,6 @@ export class Initializer {
     this.logger = container.resolve(Services.LOGGER);
   }
 
-  
   public async init(): Promise<void> {
     try {
       this.logger.info('initializing configuration');
