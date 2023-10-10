@@ -13,14 +13,18 @@ export class Initializer {
   }
 
   public async init(): Promise<void> {
-    try {
-      this.logger.info('initializing configuration');
-      await this.configProvider.createOrUpdateConfigFile();
-      /* eslint-disable @typescript-eslint/naming-convention */
-      const serviceProvider = String(this.config.get('configProvider')).toUpperCase();
-      this.logger.info(`mapproxy configuration and upadated time files were succesfully retrieved from ${serviceProvider}`);
-    } catch (error) {
-      this.logger.error(`failed retrieved configuration files, error: ${(error as Error).message}`);
+    let isInitialized = false;
+    while (!isInitialized) {
+      try {
+        this.logger.info('initializing configuration');
+        await this.configProvider.createOrUpdateConfigFile();
+        /* eslint-disable @typescript-eslint/naming-convention */
+        const serviceProvider = String(this.config.get('configProvider')).toUpperCase();
+        isInitialized = true;
+        this.logger.info(`mapproxy configuration and upadated time files were succesfully retrieved from ${serviceProvider}`);
+      } catch (error) {
+        this.logger.error(`failed retrieved configuration files, error: ${(error as Error).message}`);
+      }
     }
   }
 }
