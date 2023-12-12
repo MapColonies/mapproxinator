@@ -1,40 +1,36 @@
 import { Logger } from '@map-colonies/js-logger';
-import { inject, singleton } from 'tsyringe';
+import { $ } from 'zx';
+import { container, inject, singleton } from 'tsyringe';
 import { Watcher } from './watcher';
-import { Readiness } from './probe/readiness';
 import { Services } from './common/constants';
-import { IConfigProvider, IPollConfig } from './common/interfaces';
+import { IConfig, IConfigProvider, IPollConfig } from './common/interfaces';
 
 @singleton()
 export class PollManager {
+  private readonly config: IConfig;
   public constructor(
     @inject(Services.LOGGER) private readonly logger: Logger,
     @inject(Services.POLLCONFIG) private readonly pollCofig: IPollConfig,
     @inject(Services.CONFIGPROVIDER) private readonly configProvider: IConfigProvider,
-    private readonly watcher: Watcher,
-    private readonly readiness: Readiness
-  ) {}
+    private readonly watcher: Watcher
+  ) {
+    this.config = container.resolve(Services.CONFIG);
+  }
 
   public async poll(): Promise<void> {
     const frequencyTimeOutMS = this.pollCofig.timeout.frequencyMilliseconds;
-    const requestsKillSeconds = this.pollCofig.timeout.requestsKillSeconds;
-    const afterUpdateDelaySeconds = this.pollCofig.timeout.afterUpdateDelaySeconds;
 
     try {
       this.logger.info(`polling attempt`);
       if (!(await this.watcher.isUpdated())) {
         this.logger.debug('changes detected!');
-        const readinessKillRndInt = this.getRandomInteger();
-        this.logger.info(`killing readiness in ${readinessKillRndInt} seconds`);
-        await this.delay(readinessKillRndInt);
-        this.readiness.kill();
-        this.logger.info(`killing existing requests in ${requestsKillSeconds}`);
-        await this.delay(requestsKillSeconds);
+
         this.logger.info('updating configurations');
         await this.configProvider.createOrUpdateConfigFile();
-        // make sure mapproxy start updating before restart readiness
-        await this.delay(afterUpdateDelaySeconds);
-        this.readiness.start();
+
+        this.logger.info(`killing worker by graceful reload in uwsgi app`);
+        await this.reloadApp();
+        this.logger.info(`reload request was sent, app will be reloaded`);
       } else {
         this.logger.debug('no changes detected');
       }
@@ -49,14 +45,8 @@ export class PollManager {
     }, frequencyTimeOutMS);
   }
 
-  public async delay(seconds: number): Promise<void> {
-    const msToSeconds = 1000;
-    await new Promise((resolve) => setTimeout(resolve, seconds * msToSeconds));
-  }
-
-  public getRandomInteger(): number {
-    const maxRandomSeconds = this.pollCofig.timeout.readinessKillMaxRandomSeconds;
-    const randomInt = Math.floor(Math.random() * maxRandomSeconds);
-    return randomInt;
+  public async reloadApp(): Promise<void> {
+    const fifoFilePath = this.config.get('uwsgiFifoFilePath');
+    await $`echo r > ${fifoFilePath}`;
   }
 }
