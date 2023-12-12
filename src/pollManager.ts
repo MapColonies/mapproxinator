@@ -12,7 +12,7 @@ export class PollManager {
     @inject(Services.LOGGER) private readonly logger: Logger,
     @inject(Services.POLLCONFIG) private readonly pollCofig: IPollConfig,
     @inject(Services.CONFIGPROVIDER) private readonly configProvider: IConfigProvider,
-    private readonly watcher: Watcher,
+    private readonly watcher: Watcher
   ) {
     this.config = container.resolve(Services.CONFIG);
   }
@@ -46,7 +46,6 @@ export class PollManager {
 
   public async reloadApp(): Promise<void> {
     const fifoFilePath = this.config.get('uwsgiFifoFilePath');
-    await $ `echo r > ${fifoFilePath}`
+    await $`echo r > ${fifoFilePath}`;
   }
-
 }
