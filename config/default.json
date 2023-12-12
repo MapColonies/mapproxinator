@@ -30,12 +30,10 @@
   "updatedTimeFileName": "updated_time.json",
   "updatedTimeJsonFilePath": "/path/to/existing/updated_time.json",
   "yamlDestinationFilePath": "/path/to/destination/mapproxy.yaml",
+  "uwsgiFifoFilePath": "/path/to/fifo/file",
   "poll": {
     "timeout": {
-      "frequencyMilliseconds": 5000,
-      "readinessKillMaxRandomSeconds": 300,
-      "requestsKillSeconds": 5,
-      "afterUpdateDelaySeconds": 0.5
+      "frequencyMilliseconds": 5000
     }
   },
   "FS": {

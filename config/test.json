@@ -3,7 +3,7 @@
   "updatedTimeJsonFilePath": "tests/unit/mock/updated_time.json",
   "poll": {
     "timeout": {
-      "readinessKillMaxRandomSeconds": 1
+      "frequencyMilliseconds": 1
     }
   }
 }

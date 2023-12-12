@@ -23,9 +23,6 @@ export interface IUpdatedTimeFileContentResult {
 export interface IPollConfig {
   timeout: {
     frequencyMilliseconds: number;
-    readinessKillMaxRandomSeconds: number;
-    requestsKillSeconds: number;
-    afterUpdateDelaySeconds: number;
   };
 }
 
