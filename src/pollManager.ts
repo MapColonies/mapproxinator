@@ -24,11 +24,11 @@ export class PollManager {
       this.logger.info(`polling attempt`);
       if (!(await this.watcher.isUpdated())) {
         this.logger.debug('changes detected!');
-        this.logger.info(`killing worker by graceful reload in uwsgi app`);
-
+        
         this.logger.info('updating configurations');
         await this.configProvider.createOrUpdateConfigFile();
-
+        
+        this.logger.info(`killing worker by graceful reload in uwsgi app`);
         await this.reloadApp();
         this.logger.info(`reload request was sent, app will be reloaded`);
       } else {
