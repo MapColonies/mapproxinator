@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.1.0](https://github.com/MapColonies/mapproxinator/compare/v1.0.10...v1.1.0) (2023-12-12)
+
+
+### Features
+
+* replacing redness restart to graceful reload with fifo ([#15](https://github.com/MapColonies/mapproxinator/issues/15)) ([9d29ba3](https://github.com/MapColonies/mapproxinator/commit/9d29ba393b34296b57de9ee5e4a66ca721b5c764))
+
 ### [1.0.10](https://github.com/MapColonies/mapproxinator/compare/v1.0.9...v1.0.10) (2023-10-10)
 
 
