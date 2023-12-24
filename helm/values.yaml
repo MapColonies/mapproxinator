@@ -42,6 +42,7 @@ env:
   targetPort: 8080
   protocol: TCP
   logLevel: info
+  gracefulReloadMaxSeconds: 300
   logPrettyPrintEnabled: false
   responseCompressionEnabled: true
   requestPayloadLimit: 1mb
