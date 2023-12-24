@@ -9,7 +9,7 @@ import { IConfig, IConfigProvider, IPollConfig } from './common/interfaces';
 export class PollManager {
   private readonly config: IConfig;
   private readonly gracefulReloadMaxSeconds: number;
-  
+
   public constructor(
     @inject(Services.LOGGER) private readonly logger: Logger,
     @inject(Services.POLLCONFIG) private readonly pollCofig: IPollConfig,
@@ -30,7 +30,7 @@ export class PollManager {
 
         this.logger.info('updating configurations');
         await this.configProvider.createOrUpdateConfigFile();
-        
+
         const gracefulReloadRandomSeconds = Math.floor(Math.random() * this.gracefulReloadMaxSeconds);
         this.logger.info(`killing worker by graceful reload in uwsgi app within: ${gracefulReloadRandomSeconds} seconds`);
         await this.delay(gracefulReloadRandomSeconds);
