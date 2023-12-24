@@ -14,7 +14,6 @@ let isUpdatedStub: jest.SpyInstance;
 let reloadStub: jest.SpyInstance;
 let createOrUpdateConfigFileStub: jest.SpyInstance;
 let delaySpy: jest.SpyInstance;
-jest.useFakeTimers();
 
 describe('pollManager', () => {
   beforeAll(() => {
