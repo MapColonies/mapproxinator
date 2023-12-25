@@ -17,10 +17,9 @@ export class PollManager {
     @inject(Services.CONFIGPROVIDER) private readonly configProvider: IConfigProvider,
     private readonly watcher: Watcher
   ) {
-    const MS_TO_SECONDS = 1000;
     this.config = container.resolve(Services.CONFIG);
     this.gracefulReloadMaxSeconds = this.config.get<number>('gracefulReloadMaxSeconds');
-    this.msToSeconds = MS_TO_SECONDS;
+    this.msToSeconds = 1000;
   }
 
   public async poll(): Promise<void> {
