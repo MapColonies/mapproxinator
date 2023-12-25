@@ -9,6 +9,7 @@ import { IConfig, IConfigProvider, IPollConfig } from './common/interfaces';
 export class PollManager {
   private readonly config: IConfig;
   private readonly gracefulReloadMaxSeconds: number;
+  private readonly msToSeconds: number;
 
   public constructor(
     @inject(Services.LOGGER) private readonly logger: Logger,
@@ -16,8 +17,10 @@ export class PollManager {
     @inject(Services.CONFIGPROVIDER) private readonly configProvider: IConfigProvider,
     private readonly watcher: Watcher
   ) {
+    const MS_TO_SECONDS = 1000;
     this.config = container.resolve(Services.CONFIG);
     this.gracefulReloadMaxSeconds = this.config.get<number>('gracefulReloadMaxSeconds');
+    this.msToSeconds = MS_TO_SECONDS;
   }
 
   public async poll(): Promise<void> {
@@ -57,7 +60,6 @@ export class PollManager {
   }
 
   public async delay(seconds: number): Promise<void> {
-    const msToSeconds = 1000;
-    await new Promise((resolve) => setTimeout(resolve, seconds * msToSeconds));
+    await new Promise((resolve) => setTimeout(resolve, seconds * this.msToSeconds));
   }
 }
