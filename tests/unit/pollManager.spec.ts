@@ -13,6 +13,7 @@ let configProvider: IConfigProvider;
 let isUpdatedStub: jest.SpyInstance;
 let reloadStub: jest.SpyInstance;
 let createOrUpdateConfigFileStub: jest.SpyInstance;
+let delaySpy: jest.SpyInstance;
 
 describe('pollManager', () => {
   beforeAll(() => {
@@ -24,9 +25,10 @@ describe('pollManager', () => {
 
   beforeEach(() => {
     isUpdatedStub = jest.spyOn(watcher, 'isUpdated');
+    delaySpy = jest.spyOn(pollManager, 'delay');
+    delaySpy.mockImplementation(async () => Promise.resolve());
     reloadStub = jest.spyOn(pollManager, 'reloadApp').mockImplementation(async () => Promise.resolve());
     createOrUpdateConfigFileStub = jest.spyOn(configProvider, 'createOrUpdateConfigFile').mockResolvedValue(undefined);
-    jest.useFakeTimers();
   });
 
   afterEach(() => {
