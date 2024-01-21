@@ -19,9 +19,9 @@ export class Initializer {
       /* eslint-disable @typescript-eslint/naming-convention */
       const serviceProvider = String(this.config.get('configProvider')).toUpperCase();
       this.logger.info(`mapproxy configuration and upadated time files were succesfully retrieved from ${serviceProvider}`);
-    } catch (error) {
-      this.logger.error(`failed retrieved configuration files, error: ${(error as Error).message}`);
-      throw error;
+    } catch (err) {
+      this.logger.error({ msg: `failed to retrieve configuration files, error: ${(err as Error).message}`, err: err });
+      throw err;
     }
   }
 }

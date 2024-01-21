@@ -59,6 +59,7 @@ describe('pollManager', () => {
 
     it('should reject and not to throw an error due to poll date error (watcher)', async () => {
       const loggerMock = {
+        debug: jest.fn(),
         error: jest.fn(),
         info: jest.fn(),
       } as unknown as Logger;

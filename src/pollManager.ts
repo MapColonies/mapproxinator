@@ -10,6 +10,7 @@ export class PollManager {
   private readonly config: IConfig;
   private readonly gracefulReloadMaxSeconds: number;
   private readonly msToSeconds: number;
+  private readonly fifoFilePath: string;
 
   public constructor(
     @inject(Services.LOGGER) private readonly logger: Logger,
@@ -19,6 +20,7 @@ export class PollManager {
   ) {
     this.config = container.resolve(Services.CONFIG);
     this.gracefulReloadMaxSeconds = this.config.get<number>('gracefulReloadMaxSeconds');
+    this.fifoFilePath = this.config.get('uwsgiFifoFilePath');
     this.msToSeconds = 1000;
   }
 
@@ -26,11 +28,9 @@ export class PollManager {
     const frequencyTimeOutMS = this.pollCofig.timeout.frequencyMilliseconds;
 
     try {
-      this.logger.info(`polling attempt`);
+      this.logger.debug(`polling attempt`);
       if (!(await this.watcher.isUpdated())) {
-        this.logger.debug('changes detected!');
-
-        this.logger.info('updating configurations');
+        this.logger.info('changes detected, updating configurations');
         await this.configProvider.createOrUpdateConfigFile();
 
         const gracefulReloadRandomSeconds = Math.floor(Math.random() * this.gracefulReloadMaxSeconds);
@@ -42,11 +42,12 @@ export class PollManager {
       } else {
         this.logger.debug('no changes detected');
       }
-    } catch (error) {
-      if (error instanceof Error) {
-        const stackMessage = error.stack !== undefined ? error.stack : '';
-        this.logger.error(`Error occurred during poll check: ${error.message}, stack: ${stackMessage}`);
+    } catch (err) {
+      let errMsg = '';
+      if (err instanceof Error) {
+        errMsg = err.message ? err.message : '';
       }
+      this.logger.error({ msg: `Error occurred during poll check: ${errMsg}`, err: err });
     }
     setTimeout(() => {
       void this.poll();
@@ -54,8 +55,8 @@ export class PollManager {
   }
 
   public async reloadApp(): Promise<void> {
-    const fifoFilePath = this.config.get('uwsgiFifoFilePath');
-    await $`echo r > ${fifoFilePath}`;
+    this.logger.info(`send reload App Request`);
+    await $`echo r > ${this.fifoFilePath}`;
   }
 
   public async delay(seconds: number): Promise<void> {
