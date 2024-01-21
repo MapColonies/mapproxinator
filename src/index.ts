@@ -51,6 +51,6 @@ try {
     logger.info(`start polling`);
     void pollManager.poll();
   }
-} catch (error) {
-  logger.fatal(error);
+} catch (err) {
+  logger.fatal({ msg: `Fatal error occurred when running and crashed the service`, err: err });
 }
