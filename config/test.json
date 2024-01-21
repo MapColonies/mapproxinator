@@ -1,5 +1,6 @@
 {
   "configProvider": "fs",
+  "uwsgiFifoFilePath": "/path/to/fifo/file",
   "updatedTimeJsonFilePath": "tests/unit/mock/updated_time.json",
   "poll": {
     "timeout": {
