@@ -43,9 +43,12 @@ const startServer = (): void => {
 
 try {
   if (initMode) {
+    logger.info(`starting initMode`);
     void initializer.init();
   } else {
+    logger.info(`starting Server`);
     startServer();
+    logger.info(`start polling`);
     void pollManager.poll();
   }
 } catch (error) {

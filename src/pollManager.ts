@@ -26,7 +26,7 @@ export class PollManager {
     const frequencyTimeOutMS = this.pollCofig.timeout.frequencyMilliseconds;
 
     try {
-      this.logger.info(`polling attempt`);
+      this.logger.debug(`polling attempt`);
       if (!(await this.watcher.isUpdated())) {
         this.logger.debug('changes detected!');
 
@@ -42,11 +42,12 @@ export class PollManager {
       } else {
         this.logger.debug('no changes detected');
       }
-    } catch (error) {
-      if (error instanceof Error) {
-        const stackMessage = error.stack !== undefined ? error.stack : '';
-        this.logger.error(`Error occurred during poll check: ${error.message}, stack: ${stackMessage}`);
+    } catch (err) {
+      let errMsg = '';
+      if (err instanceof Error) {
+        errMsg = err.message ? err.message : '';
       }
+      this.logger.error({ msg: `Error occurred during poll check: ${errMsg}`, err: err });
     }
     setTimeout(() => {
       void this.poll();

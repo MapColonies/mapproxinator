@@ -40,7 +40,7 @@ export class DBProvider implements IConfigProvider {
     this.pool = new Pool(pgClientConfig);
     this.pool.on('error', (err) => {
       const errMsg = err.message ? err.message : 'unknown db-connection error';
-      this.logger.error(`Failed established connection to db with error: ${errMsg}`);
+      this.logger.error({ msg: `Failed established connection to db with error: ${errMsg}`, err: err });
     });
   }
 
