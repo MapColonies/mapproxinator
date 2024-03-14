@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.2.4](https://github.com/MapColonies/mapproxinator/compare/v1.2.2...v1.2.4) (2024-03-14)
+
+
+### Bug Fixes
+
+* gracefulDelay will be taken from global ([#20](https://github.com/MapColonies/mapproxinator/issues/20)) ([26d4b46](https://github.com/MapColonies/mapproxinator/commit/26d4b46d57dfe130ff03d41a8fa038620a43569b))
+
 ### [1.2.3](https://github.com/MapColonies/mapproxinator/compare/v1.2.2...v1.2.3) (2024-03-14)
 
 
