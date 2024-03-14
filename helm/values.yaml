@@ -3,6 +3,7 @@ global:
   tracing: {}
   metrics: {}
   environment: {}
+  gracefulReloadMaxSeconds: 300
 
 authentication:
   ca:
@@ -42,7 +43,6 @@ env:
   targetPort: 8080
   protocol: TCP
   logLevel: info
-  gracefulReloadMaxSeconds: 300
   logPrettyPrintEnabled: false
   responseCompressionEnabled: true
   requestPayloadLimit: 1mb
