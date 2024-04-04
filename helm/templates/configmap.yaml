@@ -20,4 +20,6 @@ data:
   TELEMETRY_METRICS_URL: {{ $metricsUrl }}
   {{ end }}
   LOG_LEVEL: {{ .Values.env.logLevel | quote }}
+  GRACEFUL_RELOAD_MAX_SECONDS: {{ .Values.global.gracefulReloadMaxSeconds | quote }}
+  PGAPPNAME: {{ $chartName }}
 {{- end }}

@@ -1,7 +1,6 @@
 import { container } from 'tsyringe';
 import config from 'config';
 import { trace } from '@opentelemetry/api';
-import { Metrics } from '@map-colonies/telemetry';
 import jsLogger from '@map-colonies/js-logger';
 import { Services } from '../../src/common/constants';
 import { IPollConfig } from '../../src/common/interfaces';
@@ -19,9 +18,6 @@ function registerTestValues(): void {
   const testTracer = trace.getTracer('testTracer');
   container.register(Services.TRACER, { useValue: testTracer });
 
-  const metrics = new Metrics('app_meter');
-  const meter = metrics.start();
-  container.register(Services.METER, { useValue: meter });
   container.register(Services.CONFIGPROVIDER, {
     useValue: getProvider(provider),
   });

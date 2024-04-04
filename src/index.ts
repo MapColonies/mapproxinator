@@ -5,7 +5,6 @@ import { createServer } from 'http';
 import { createTerminus } from '@godaddy/terminus';
 import { Logger } from '@map-colonies/js-logger';
 import { container } from 'tsyringe';
-import { get } from 'config';
 import { DEFAULT_SERVER_PORT, Services } from './common/constants';
 import { getApp } from './app';
 import { IConfig } from './common/interfaces';
@@ -27,12 +26,13 @@ const pollManager = container.resolve(PollManager);
 const initMode = config.get<boolean>('initMode');
 
 const startServer = (): void => {
-  const serverConfig = get<IServerConfig>('server');
+  const serverConfig = config.get<IServerConfig>('server');
   const port: number = parseInt(serverConfig.port) || DEFAULT_SERVER_PORT;
   const app = getApp();
   const healthCheck = container.resolve(Liveness).probe;
   const readyCheck = container.resolve(Readiness).probe;
   const server = createTerminus(createServer(app), {
+    // eslint-disable-next-line @typescript-eslint/naming-convention
     healthChecks: { '/liveness': healthCheck, '/readiness': readyCheck, onSignal: container.resolve('onSignal') },
   });
 
@@ -43,11 +43,14 @@ const startServer = (): void => {
 
 try {
   if (initMode) {
+    logger.info(`starting initMode`);
     void initializer.init();
   } else {
+    logger.info(`starting Server`);
     startServer();
+    logger.info(`start polling`);
     void pollManager.poll();
   }
-} catch (error) {
-  logger.fatal(error);
+} catch (err) {
+  logger.fatal({ msg: `Fatal error occurred when running and crashed the service`, err: err });
 }

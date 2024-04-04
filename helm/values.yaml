@@ -3,6 +3,7 @@ global:
   tracing: {}
   metrics: {}
   environment: {}
+  gracefulReloadMaxSeconds: 300
 
 authentication:
   ca:

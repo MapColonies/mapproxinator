@@ -2,6 +2,7 @@ import { dirname, join } from 'path';
 import { promises as fsp, readFileSync } from 'fs';
 import { Pool, PoolClient, PoolConfig } from 'pg';
 import { container } from 'tsyringe';
+import { Logger } from '@map-colonies/js-logger';
 import { Services } from '../constants';
 import { IConfigProvider, IDBConfig, IConfigQueryResult, IConfig } from '../interfaces';
 import { convertJsonToYaml, createLastUpdatedTimeJsonFile } from '../utils';
@@ -10,12 +11,14 @@ export class DBProvider implements IConfigProvider {
   private readonly dbConfig: IDBConfig;
   private readonly config: IConfig;
   private readonly pool: Pool;
+  private readonly logger: Logger;
   private readonly updatedTimeFileName: string;
   private readonly yamlDestinationFilePath: string;
 
   public constructor() {
     this.dbConfig = container.resolve(Services.DBCONFIG);
     this.config = container.resolve(Services.CONFIG);
+    this.logger = container.resolve(Services.LOGGER);
     this.updatedTimeFileName = this.config.get<string>('updatedTimeFileName');
     this.yamlDestinationFilePath = this.config.get<string>('yamlDestinationFilePath');
 
@@ -35,6 +38,10 @@ export class DBProvider implements IConfigProvider {
       };
     }
     this.pool = new Pool(pgClientConfig);
+    this.pool.on('error', (err) => {
+      const errMsg = err.message ? err.message : 'unknown db-connection error';
+      this.logger.error({ msg: `Failed established connection to db with error: ${errMsg}`, err: err });
+    });
   }
 
   public async getLastUpdatedtime(): Promise<Date> {
