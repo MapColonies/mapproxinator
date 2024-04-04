@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.2.5](https://github.com/MapColonies/mapproxinator/compare/v1.2.4...v1.2.5) (2024-04-04)
+
+
+### Bug Fixes
+
+* ZX bug (MAPCO-4154) ([#21](https://github.com/MapColonies/mapproxinator/issues/21)) ([071b13e](https://github.com/MapColonies/mapproxinator/commit/071b13ebf04afbdc26f043458b92b3af56042909))
+
 ### [1.2.4](https://github.com/MapColonies/mapproxinator/compare/v1.2.2...v1.2.4) (2024-03-14)
 
 
