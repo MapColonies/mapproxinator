@@ -51,6 +51,9 @@ export class DBProvider implements IConfigProvider {
       const result = await client.query<IConfigQueryResult>(query);
       const lastUpdatedTime = result.rows[0].updated_time;
       return lastUpdatedTime;
+    } catch (err) {
+      this.logger.error({ msg: 'Failed to get last updated time', err });
+      throw err;
     } finally {
       client.release();
     }
@@ -69,6 +72,9 @@ export class DBProvider implements IConfigProvider {
 
       await fsp.writeFile(destination, yamlContent);
       await createLastUpdatedTimeJsonFile(updatedTimeJsonFileDest, updatedTime);
+    } catch (err) {
+      this.logger.error({ msg: 'Failed to create or update config file', err });
+      throw err;
     } finally {
       pgClient.release();
     }
