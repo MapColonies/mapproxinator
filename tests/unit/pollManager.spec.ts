@@ -27,7 +27,7 @@ describe('pollManager', () => {
     isUpdatedStub = jest.spyOn(watcher, 'isUpdated');
     delaySpy = jest.spyOn(pollManager, 'delay');
     delaySpy.mockImplementation(async () => Promise.resolve());
-    reloadStub = jest.spyOn(pollManager, 'reloadApp').mockImplementation(async () => Promise.resolve());
+    reloadStub = jest.spyOn(pollManager, 'reloadApp').mockReturnValue(undefined);
     createOrUpdateConfigFileStub = jest.spyOn(configProvider, 'createOrUpdateConfigFile').mockResolvedValue(undefined);
   });
 
