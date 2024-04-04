@@ -1,5 +1,5 @@
+import { exec } from 'child_process';
 import { Logger } from '@map-colonies/js-logger';
-import { $ } from 'zx';
 import { container, inject, singleton } from 'tsyringe';
 import { Watcher } from './watcher';
 import { Services } from './common/constants';
@@ -37,7 +37,7 @@ export class PollManager {
         this.logger.info(`killing worker by graceful reload in uwsgi app within: ${gracefulReloadRandomSeconds} seconds`);
         await this.delay(gracefulReloadRandomSeconds);
 
-        await this.reloadApp();
+        this.reloadApp();
         this.logger.info(`reload request was sent, app will be reloaded`);
       } else {
         this.logger.debug('no changes detected');
@@ -54,9 +54,14 @@ export class PollManager {
     }, frequencyTimeOutMS);
   }
 
-  public async reloadApp(): Promise<void> {
+  public reloadApp(): void {
     this.logger.info(`send reload App Request`);
-    await $`echo r > ${this.fifoFilePath}`;
+    exec(`echo r > ${this.fifoFilePath}`, (err) => {
+      if (err) {
+        this.logger.error({ msg: 'error occurred during app reload', err: err });
+        return;
+      }
+    });
   }
 
   public async delay(seconds: number): Promise<void> {
