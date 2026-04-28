@@ -6,6 +6,7 @@ info:
   license:
     name: MIT
     url: https://opensource.org/licenses/MIT
+security: []
 paths:
   /resourceName:
     get:
@@ -20,6 +21,12 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/resource'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
     post:
       operationId: createResource
       tags:
