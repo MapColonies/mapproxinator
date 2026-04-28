@@ -43,9 +43,6 @@ jobs:
         with:
           node-version: ${{ matrix.node }}
 
-      - name: Copy Schema
-        run: npm run copySchema
-
       - name: Lint OpenAPI
         run: npx @redocly/cli lint --format=github-actions ./openapi3.yaml
 
