@@ -1,83 +1,81 @@
 name: pull_request
-
 on: [pull_request]
 
 jobs:
   eslint:
-    name: Run eslint
+    name: Run TS Project eslint
+    runs-on: ubuntu-latest
+    strategy: &node-strategy
+      matrix:
+        node: [24.x]
+
+    steps:
+      - name: Run TS Project linters
+        uses: MapColonies/shared-workflows/actions/eslint@eslint-v1.0.1
+        with: 
+          node_version: ${{ matrix.node }}
+
+  helm-lint:
+    name: Run Helm lint Check
     runs-on: ubuntu-latest
 
     steps:
-      - name: Check out Git repository
-        uses: actions/checkout@v2
-
-      - name: Set up Node.js
-        uses: actions/setup-node@v1
+      - name: Check out TS Project Git repository
+        uses: actions/checkout@v6
         with:
-          node-version: 16
+          fetch-depth: 0
 
-      - name: Install dependencies
-        run: npm ci
+      - name: Helm Lint Checks
+        uses: MapColonies/shared-workflows/actions/helm-lint@helm-lint-v1
 
-      - name: Run linters
-        uses: wearerequired/lint-action@v1
-        with:
-          github_token: ${{ secrets.github_token }}
-          # Enable linters
-          eslint: true
-          prettier: true
-          eslint_extensions: ts
-
-      - name: OpenAPI Lint Checks
-        uses: nwestfall/openapi-action@v1.0.2
-        with:
-         github_token: ${{ secrets.GITHUB_TOKEN }}
-         file: ./openapi3.yaml
-
-  security:
+  openapi-lint:
+    name: Run OpenAPI lint Check
     runs-on: ubuntu-latest
+
+    strategy: *node-strategy
+
     steps:
-    - uses: actions/checkout@master
-    - name: Run Snyk to check for vulnerabilities
-      uses: snyk/actions/node@master
-      continue-on-error: true
-      env:
-        SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+      - name: Check out TS Project Git repository
+        uses: actions/checkout@v6
+
+      - name: Init Nodejs
+        uses: MapColonies/shared-workflows/actions/init-npm@init-npm-v1
+        with:
+          node-version: ${{ matrix.node }}
+
+      - name: Copy Schema
+        run: npm run copySchema
+
+      - name: Lint OpenAPI
+        run: npx @redocly/cli lint --format=github-actions ./openapi3.yaml
+
 
   tests:
     name: Run Tests
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        node: [16.x, 18.x]
+
+    strategy: *node-strategy
 
     steps:
-      - name: Check out Git repository
-        uses: actions/checkout@v2
+      - name: Check out TS Project Git repository
+        uses: actions/checkout@v6
 
-      - name: Set up Node.js
-        uses: actions/setup-node@v1
+
+      - name: Init Nodejs
+        uses: MapColonies/shared-workflows/actions/init-npm@init-npm-v1
         with:
           node-version: ${{ matrix.node }}
-
-      - name: Install Node.js dependencies
-        run: npm ci
 
       - name: Run tests
         run: npm run test
 
-      - uses: actions/upload-artifact@v2
+      - uses: actions/upload-artifact@v6
         with:
-          name: Test Reporters
-          path: reports/**
+          name: Test Reporters ${{ matrix.node }}
+          path: ./reports/**
 
-  build_image:
-    name: Build Image
+  build_docker_image:
     runs-on: ubuntu-latest
-
     steps:
-      - name: Check out Git repository
-        uses: actions/checkout@v2
-
-      - name: build Docker image
-        run: docker build -t test-build:latest .
+      - name: Build and Push Docker image
+        uses: docker/build-push-action@v6
