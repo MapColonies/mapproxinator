@@ -1,5 +1,4 @@
-FROM node:16 as build
-
+FROM node:24.0.0 AS build
 
 WORKDIR /tmp/buildApp
 
@@ -9,9 +8,9 @@ RUN npm install
 COPY . .
 RUN npm run build
 
-FROM node:16.14.2-alpine3.14 as production
+FROM node:24.0.0-alpine3.21 AS production
 
-RUN apk add dumb-init
+RUN apk add --no-cache dumb-init python3 make g++
 
 ENV NODE_ENV=production
 ENV SERVER_PORT=8080
