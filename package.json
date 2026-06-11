@@ -50,7 +50,6 @@
     "@opentelemetry/instrumentation-http": "0.35.1",
     "aws-sdk": "^2.951.0",
     "compression": "^1.7.4",
-    "config": "^4.2.0",
     "express": "^4.18.2",
     "express-openapi-validator": "^5.0.4",
     "http-status-codes": "^2.2.0",
