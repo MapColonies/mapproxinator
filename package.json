@@ -58,7 +58,7 @@
     "zod": "^3.22.4"
   },
   "devDependencies": {
-    "@commitlint/cli": "^17.6.6",
+    "@commitlint/cli": "^20.4.1",
     "@commitlint/config-conventional": "^17.6.6",
     "@map-colonies/eslint-config": "^8.0.0",
     "@map-colonies/prettier-config": "^1.0.0",
