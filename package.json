@@ -26,11 +26,6 @@
   },
   "author": "MapColonies",
   "license": "ISC",
-  "config": {
-    "commitizen": {
-      "path": "./node_modules/cz-conventional-changelog"
-    }
-  },
   "dependencies": {
     "@godaddy/terminus": "^4.12.1",
     "@map-colonies/config": "^4.0.1",
