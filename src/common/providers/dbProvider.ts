@@ -1,10 +1,11 @@
-import { dirname, join } from 'path';
-import { promises as fsp, readFileSync } from 'fs';
-import { Pool, PoolClient, PoolConfig } from 'pg';
+import { dirname, join } from 'node:path';
+import { promises as fsp, readFileSync } from 'node:fs';
+import type { PoolClient, PoolConfig } from 'pg';
+import { Pool } from 'pg';
 import { container } from 'tsyringe';
-import { Logger } from '@map-colonies/js-logger';
+import type { Logger } from '@map-colonies/js-logger';
 import { Services } from '../constants';
-import { IConfigProvider, IDBConfig, IConfigQueryResult, IConfig } from '../interfaces';
+import type { IConfigProvider, IDBConfig, IConfigQueryResult, IConfig } from '../interfaces';
 import { convertJsonToYaml, createLastUpdatedTimeJsonFile } from '../utils';
 
 export class DBProvider implements IConfigProvider {

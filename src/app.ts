@@ -1,5 +1,5 @@
 import { container } from 'tsyringe';
-import { Application } from 'express';
+import type { Application } from 'express';
 import { ServerBuilder } from './serverBuilder';
 
 function getApp(): Application {

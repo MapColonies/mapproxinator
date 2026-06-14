@@ -1,5 +1,5 @@
-import { exec } from 'child_process';
-import { Logger } from '@map-colonies/js-logger';
+import { exec } from 'node:child_process';
+import type { Logger } from '@map-colonies/js-logger';
 import { inject, singleton } from 'tsyringe';
 import { Watcher } from './watcher';
 import { Services } from './common/constants';

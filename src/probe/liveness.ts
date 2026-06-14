@@ -1,6 +1,6 @@
 import { HealthCheckError } from '@godaddy/terminus';
 import { inject, singleton } from 'tsyringe';
-import { Logger } from '@map-colonies/js-logger';
+import type { Logger } from '@map-colonies/js-logger';
 import { Services } from '../common/constants';
 
 @singleton()

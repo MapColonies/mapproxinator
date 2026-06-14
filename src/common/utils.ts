@@ -1,6 +1,6 @@
-import { promises as fsp } from 'fs';
+import { promises as fsp } from 'node:fs';
 import { dump } from 'js-yaml';
-import { IUpdatedTimeFileContent, IUpdatedTimeFileContentResult } from './interfaces';
+import type { IUpdatedTimeFileContent, IUpdatedTimeFileContentResult } from './interfaces';
 
 export const getFileContentAsJson = async (filePath: string): Promise<IUpdatedTimeFileContentResult> => {
   const content = await fsp.readFile(filePath, { encoding: 'utf8' });

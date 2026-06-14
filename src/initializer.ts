@@ -1,6 +1,6 @@
 import { container, inject, singleton } from 'tsyringe';
 import { Logger } from '@map-colonies/js-logger';
-import { IConfig, IConfigProvider } from './common/interfaces';
+import type { IConfig, IConfigProvider } from './common/interfaces';
 import { Services } from './common/constants';
 
 @singleton()

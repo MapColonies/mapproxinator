@@ -1,8 +1,8 @@
 /* eslint-disable @typescript-eslint/naming-convention */
-import { Logger } from '@map-colonies/js-logger';
+import type { Logger } from '@map-colonies/js-logger';
 import { inject, singleton } from 'tsyringe';
 import { Services } from './common/constants';
-import { IConfigProvider, IConfig } from './common/interfaces';
+import type { IConfigProvider, IConfig } from './common/interfaces';
 import { compareDates, getFileContentAsJson } from './common/utils';
 
 @singleton()

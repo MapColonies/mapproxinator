@@ -1,13 +1,12 @@
-/* eslint-disable import/first */
 // this import must be called before the first import of tsyring
 import 'reflect-metadata';
-import { createServer } from 'http';
+import { createServer } from 'node:http';
 import { createTerminus } from '@godaddy/terminus';
-import { Logger } from '@map-colonies/js-logger';
+import type { Logger } from '@map-colonies/js-logger';
 import { container } from 'tsyringe';
 import { DEFAULT_SERVER_PORT, Services } from './common/constants';
 import { getApp } from './app';
-import { IConfig } from './common/interfaces';
+import type { IConfig } from './common/interfaces';
 import { Readiness } from './probe/readiness';
 import { PollManager } from './pollManager';
 import { Liveness } from './probe/liveness';

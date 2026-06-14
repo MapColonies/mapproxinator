@@ -1,7 +1,7 @@
-import { dirname, join } from 'path';
-import { promises as fsp } from 'fs';
+import { dirname, join } from 'node:path';
+import { promises as fsp } from 'node:fs';
 import { container } from 'tsyringe';
-import { IConfig, IConfigProvider, IFSConfig } from '../interfaces';
+import type { IConfig, IConfigProvider, IFSConfig } from '../interfaces';
 import { Services } from '../constants';
 import { createLastUpdatedTimeJsonFile } from '../utils';
 
