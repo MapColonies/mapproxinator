@@ -6,6 +6,7 @@ import { getTracing } from '@common/tracing';
 import { SERVICE_NAME, Services } from './common/constants';
 import { IPollConfig } from './common/interfaces';
 import { getProvider } from './common/getProvider';
+import { getConfig } from './common/config';
 
 export const registerExternalValues = async (): Promise<void> => {
   const configInstance = getConfig();
