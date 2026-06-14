@@ -1,5 +1,5 @@
+import { ConfigProvider } from '@src/common/constants';
 import { registerTestValues } from '../../integration/testContainerConfig';
-import { Providers } from '../../../src/common/enums';
 import { getProvider } from '../../../src/common/getProvider';
 
 jest.mock('../../../src/common/providers/fsProvider');
@@ -14,19 +14,19 @@ describe('getProvider', () => {
 
   it('should return a DB provider', () => {
     const providerName = 'DBProvider';
-    const provider = getProvider(Providers.DB);
+    const provider = getProvider(ConfigProvider.DB);
     expect(provider.constructor.name).toBe(providerName);
   });
 
   it('should return an FS provider', () => {
     const providerName = 'FSProvider';
-    const provider = getProvider(Providers.FS);
+    const provider = getProvider(ConfigProvider.FS);
     expect(provider.constructor.name).toBe(providerName);
   });
 
   it('should return a S3 provider', () => {
     const providerName = 'S3Provider';
-    const provider = getProvider(Providers.S3);
+    const provider = getProvider(ConfigProvider.S3);
     expect(provider.constructor.name).toBe(providerName);
   });
 });

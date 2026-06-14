@@ -16,3 +16,11 @@ export enum Services {
   FSCONFIG = 'FS',
   CONFIGPROVIDER = 'CONFIGPROVIDER',
 }
+
+/* eslint-disable @typescript-eslint/naming-convention */
+export const ConfigProvider = {
+  FS: 'fs',
+  S3: 's3',
+  DB: 'db',
+};
+/* eslint-enable @typescript-eslint/naming-convention */
