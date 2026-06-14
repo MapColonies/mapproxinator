@@ -18,40 +18,44 @@ interface IServerConfig {
   port: string;
 }
 
-registerExternalValues();
-const initializer = container.resolve(Initializer);
-const logger = container.resolve<Logger>(Services.LOGGER);
-const config = container.resolve<IConfig>(Services.CONFIG);
-const pollManager = container.resolve(PollManager);
-const initMode = config.get<boolean>('initMode');
+void registerExternalValues()
+  .then(() => {
+    const initializer = container.resolve(Initializer);
+    const logger = container.resolve<Logger>(Services.LOGGER);
+    const config = container.resolve<IConfig>(Services.CONFIG);
+    const pollManager = container.resolve(PollManager);
+    const initMode = config.get<boolean>('initMode');
 
-const startServer = (): void => {
-  const serverConfig = config.get<IServerConfig>('server');
-  const port: number = parseInt(serverConfig.port) || DEFAULT_SERVER_PORT;
-  const app = getApp();
-  const healthCheck = container.resolve(Liveness).probe;
-  const readyCheck = container.resolve(Readiness).probe;
-  const server = createTerminus(createServer(app), {
-    // eslint-disable-next-line @typescript-eslint/naming-convention
-    healthChecks: { '/liveness': healthCheck, '/readiness': readyCheck },
-    onSignal: container.resolve('onSignal'),
+    const startServer = (): void => {
+      const serverConfig = config.get<IServerConfig>('server');
+      const port: number = parseInt(serverConfig.port) || DEFAULT_SERVER_PORT;
+      const app = getApp();
+      const healthCheck = container.resolve(Liveness).probe;
+      const readyCheck = container.resolve(Readiness).probe;
+      const server = createTerminus(createServer(app), {
+        healthChecks: { '/liveness': healthCheck, '/readiness': readyCheck },
+        onSignal: container.resolve('onSignal'),
+      });
+
+      server.listen(port, () => {
+        logger.info(`app started on port ${port}`);
+      });
+    };
+
+    try {
+      if (initMode) {
+        logger.info(`starting initMode`);
+        void initializer.init();
+      } else {
+        logger.info(`starting Server`);
+        startServer();
+        logger.info(`start polling`);
+        void pollManager.poll();
+      }
+    } catch (err) {
+      logger.fatal({ msg: `Fatal error occurred when running and crashed the service`, err });
+    }
+  })
+  .catch((err) => {
+    console.error({ msg: 'Could not register values', err: JSON.stringify(err) });
   });
-
-  server.listen(port, () => {
-    logger.info(`app started on port ${port}`);
-  });
-};
-
-try {
-  if (initMode) {
-    logger.info(`starting initMode`);
-    void initializer.init();
-  } else {
-    logger.info(`starting Server`);
-    startServer();
-    logger.info(`start polling`);
-    void pollManager.poll();
-  }
-} catch (err) {
-  logger.fatal({ msg: `Fatal error occurred when running and crashed the service`, err: err });
-}
