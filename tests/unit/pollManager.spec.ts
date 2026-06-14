@@ -63,7 +63,7 @@ describe('pollManager', () => {
         error: jest.fn(),
         info: jest.fn(),
       } as unknown as Logger;
-      pollManager = new PollManager(loggerMock, container.resolve(Services.POLLCONFIG), configProvider, watcher);
+      pollManager = new PollManager(loggerMock, container.resolve(Services.CONFIG), configProvider, watcher);
       isUpdatedStub.mockRejectedValue(new Error('Error1'));
 
       await pollManager.poll();

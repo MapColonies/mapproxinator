@@ -5,7 +5,6 @@ import { jsLogger } from '@map-colonies/js-logger';
 import { getTracing } from '@common/tracing';
 import { type InjectionObject, registerDependencies } from '@common/dependencyRegistration';
 import { SERVICE_NAME, Services } from './common/constants';
-import { IPollConfig } from './common/interfaces';
 import { getProvider } from './common/getProvider';
 import { getConfig } from './common/config';
 
@@ -24,7 +23,6 @@ export const registerExternalValues = async (options?: RegisterOptions): Promise
   const tracer = trace.getTracer(SERVICE_NAME);
 
   const provider = configInstance.get<string>('configProvider');
-  const pollConfig = configInstance.get<IPollConfig>('poll');
   const fsConfig = configInstance.get(Services.FSCONFIG);
   const dbConfig = configInstance.get(Services.DBCONFIG);
   const s3Config = configInstance.get(Services.S3CONFIG);
@@ -36,7 +34,6 @@ export const registerExternalValues = async (options?: RegisterOptions): Promise
     { token: Services.FSCONFIG, provider: { useValue: fsConfig } },
     { token: Services.DBCONFIG, provider: { useValue: dbConfig } },
     { token: Services.S3CONFIG, provider: { useValue: s3Config } },
-    { token: Services.POLLCONFIG, provider: { useValue: pollConfig } },
     {
       token: 'onSignal',
       provider: {
