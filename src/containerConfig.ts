@@ -22,7 +22,7 @@ export const registerExternalValues = async (options?: RegisterOptions): Promise
 
   const tracer = trace.getTracer(SERVICE_NAME);
 
-  const provider = configInstance.get<string>('configProvider');
+  const provider = configInstance.get('configProvider') as string;
   const fsConfig = configInstance.get(Services.FSCONFIG);
   const dbConfig = configInstance.get(Services.DBCONFIG);
   const s3Config = configInstance.get(Services.S3CONFIG);
