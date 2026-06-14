@@ -1,14 +1,20 @@
-import { container } from 'tsyringe';
+import type { DependencyContainer } from 'tsyringe';
 import { getOtelMixin } from '@map-colonies/tracing-utils';
 import { trace } from '@opentelemetry/api';
 import { jsLogger } from '@map-colonies/js-logger';
 import { getTracing } from '@common/tracing';
+import { type InjectionObject, registerDependencies } from '@common/dependencyRegistration';
 import { SERVICE_NAME, Services } from './common/constants';
 import { IPollConfig } from './common/interfaces';
 import { getProvider } from './common/getProvider';
 import { getConfig } from './common/config';
 
-export const registerExternalValues = async (): Promise<void> => {
+export interface RegisterOptions {
+  override?: InjectionObject<unknown>[];
+  useChild?: boolean;
+}
+
+export const registerExternalValues = async (options?: RegisterOptions): Promise<DependencyContainer> => {
   const configInstance = getConfig();
 
   const loggerConfig = configInstance.get('telemetry.logger');
@@ -23,19 +29,29 @@ export const registerExternalValues = async (): Promise<void> => {
   const dbConfig = configInstance.get(Services.DBCONFIG);
   const s3Config = configInstance.get(Services.S3CONFIG);
 
-  container.register(Services.CONFIG, { useValue: configInstance });
-  container.register(Services.LOGGER, { useValue: logger });
-  container.register(Services.FSCONFIG, { useValue: fsConfig });
-  container.register(Services.DBCONFIG, { useValue: dbConfig });
-  container.register(Services.S3CONFIG, { useValue: s3Config });
-  container.register(Services.POLLCONFIG, { useValue: pollConfig });
-  container.register(Services.TRACER, { useValue: tracer });
-  container.register('onSignal', {
-    useValue: async (): Promise<void> => {
-      await Promise.all([getTracing().stop()]);
+  const dependencies: InjectionObject<unknown>[] = [
+    { token: Services.CONFIG, provider: { useValue: configInstance } },
+    { token: Services.LOGGER, provider: { useValue: logger } },
+    { token: Services.TRACER, provider: { useValue: tracer } },
+    { token: Services.FSCONFIG, provider: { useValue: fsConfig } },
+    { token: Services.DBCONFIG, provider: { useValue: dbConfig } },
+    { token: Services.S3CONFIG, provider: { useValue: s3Config } },
+    { token: Services.POLLCONFIG, provider: { useValue: pollConfig } },
+    {
+      token: 'onSignal',
+      provider: {
+        useValue: async (): Promise<void> => {
+          await Promise.all([getTracing().stop()]);
+        },
+      },
     },
-  });
-  container.register(Services.CONFIGPROVIDER, {
-    useValue: getProvider(provider),
-  });
+    {
+      token: Services.CONFIGPROVIDER,
+      provider: {
+        useValue: getProvider(provider),
+      },
+    },
+  ];
+
+  return Promise.resolve(registerDependencies(dependencies, options?.override, options?.useChild));
 };
