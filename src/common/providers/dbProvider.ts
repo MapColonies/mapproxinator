@@ -48,8 +48,9 @@ export class DBProvider implements IConfigProvider {
     const client = await this.connectToDb();
     try {
       const query = `SELECT ${this.dbConfig.columns.updatedTime} FROM ${this.dbConfig.table} ORDER BY ${this.dbConfig.columns.updatedTime} DESC limit 1`;
-      const result = await client.query<IConfigQueryResult>(query);
-      const lastUpdatedTime = result.rows[0].updated_time;
+      const queryResult = await client.query<IConfigQueryResult>(query);
+      if (!queryResult.rows[0]) throw new Error('Empty rows response');
+      const lastUpdatedTime = queryResult.rows[0].updated_time;
       return lastUpdatedTime;
     } catch (err) {
       this.logger.error({ msg: 'Failed to get last updated time', err });
@@ -64,6 +65,7 @@ export class DBProvider implements IConfigProvider {
     try {
       const query = `SELECT * FROM ${this.dbConfig.table} ORDER BY ${this.dbConfig.columns.updatedTime} DESC limit 1`;
       const queryResult = await pgClient.query<IConfigQueryResult>(query);
+      if (!queryResult.rows[0]) throw new Error('Empty rows response');
       const jsonContent = queryResult.rows[0].data;
       const updatedTime = queryResult.rows[0].updated_time;
       const yamlContent = convertJsonToYaml(jsonContent);
