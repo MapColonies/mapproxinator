@@ -1,17 +1,17 @@
 import { container } from 'tsyringe';
-import config from 'config';
 import { trace } from '@opentelemetry/api';
-import jsLogger from '@map-colonies/js-logger';
+import { container } from 'tsyringe';
+import { getConfig } from '../../src/common/config';
 import { Services } from '../../src/common/constants';
-import { IPollConfig } from '../../src/common/interfaces';
 import { getProvider } from '../../src/common/getProvider';
+import type { IPollConfig } from '../../src/common/interfaces';
 
-function registerTestValues(): void {
-  const pollConfig = config.get<IPollConfig>('poll');
-  const provider = config.get<string>('configProvider');
-  const fsConfig = config.get(Services.FSCONFIG);
-  container.register(Services.CONFIG, { useValue: config });
-  container.register(Services.LOGGER, { useValue: jsLogger({ enabled: false }) });
+export const registerTestValues = async (): Promise<void> => {
+  const configInstance = getConfig();
+  const pollConfig = configInstance.get<IPollConfig>('poll');
+  const provider = configInstance.get<string>('configProvider');
+  const fsConfig = configInstance.get(Services.FSCONFIG);
+  container.register(Services.CONFIG, { useValue: configInstance });
   container.register(Services.POLLCONFIG, { useValue: pollConfig });
   container.register(Services.FSCONFIG, { useValue: fsConfig });
   // if sdk is not initialized then getTracer returns a NoopTracer
