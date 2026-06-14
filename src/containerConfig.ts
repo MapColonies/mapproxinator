@@ -1,4 +1,4 @@
-import type { DependencyContainer } from 'tsyringe';
+import { instanceCachingFactory, type DependencyContainer } from 'tsyringe';
 import { getOtelMixin } from '@map-colonies/tracing-utils';
 import { trace } from '@opentelemetry/api';
 import { jsLogger } from '@map-colonies/js-logger';
@@ -45,7 +45,7 @@ export const registerExternalValues = async (options?: RegisterOptions): Promise
     {
       token: Services.CONFIGPROVIDER,
       provider: {
-        useValue: getProvider(provider),
+        useFactory: instanceCachingFactory(() => getProvider(provider)),
       },
     },
   ];
