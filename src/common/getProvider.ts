@@ -6,7 +6,7 @@ import { S3Provider } from './providers/s3Provider';
 
 // eslint-disable-next-line @typescript-eslint/naming-convention
 export const getProvider = (provider: string): IConfigProvider => {
-  switch (provider.toLowerCase()) {
+  switch (provider) {
     case ConfigProvider.FS:
       return new FSProvider();
     case ConfigProvider.S3:

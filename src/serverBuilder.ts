@@ -7,7 +7,7 @@ import { middleware as OpenApiMiddleware } from 'express-openapi-validator';
 import { inject, injectable } from 'tsyringe';
 import type { Logger } from '@map-colonies/js-logger';
 import httpLogger from '@map-colonies/express-access-log-middleware';
-import { Services } from './common/constants';
+import { SERVICES } from './common/constants';
 import type { IConfig } from './common/interfaces';
 
 @injectable()
@@ -15,8 +15,8 @@ export class ServerBuilder {
   private readonly serverInstance: express.Application;
 
   public constructor(
-    @inject(Services.CONFIG) private readonly config: IConfig,
-    @inject(Services.LOGGER) private readonly logger: Logger
+    @inject(SERVICES.CONFIG) private readonly config: IConfig,
+    @inject(SERVICES.LOGGER) private readonly logger: Logger
   ) {
     this.serverInstance = express();
   }

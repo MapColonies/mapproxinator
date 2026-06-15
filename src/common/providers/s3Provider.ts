@@ -6,7 +6,7 @@ import * as AWS from 'aws-sdk';
 import { container } from 'tsyringe';
 import type { CredentialsOptions } from 'aws-sdk/lib/credentials';
 import type { IConfig, IConfigProvider, IS3Config } from '../interfaces';
-import { Services } from '../constants';
+import { SERVICES } from '../constants';
 import { createLastUpdatedTimeJsonFile } from '../utils';
 
 export class S3Provider implements IConfigProvider {
@@ -18,8 +18,8 @@ export class S3Provider implements IConfigProvider {
   private readonly yamlDestinationFilePath: string;
 
   public constructor() {
-    this.config = container.resolve(Services.CONFIG);
-    this.s3Config = container.resolve(Services.S3CONFIG);
+    this.config = container.resolve(SERVICES.CONFIG);
+    this.s3Config = container.resolve(SERVICES.S3CONFIG);
     this.updatedTimeFileName = this.config.get<string>('updatedTimeFileName');
     this.yamlDestinationFilePath = this.config.get<string>('yamlDestinationFilePath');
     const credentials: CredentialsOptions = {

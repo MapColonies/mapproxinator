@@ -2,7 +2,7 @@ import { exec } from 'node:child_process';
 import type { Logger } from '@map-colonies/js-logger';
 import { inject, singleton } from 'tsyringe';
 import { Watcher } from './watcher';
-import { Services } from './common/constants';
+import { SERVICES } from './common/constants';
 import type { IConfig, IConfigProvider, IPollConfig } from './common/interfaces';
 
 @singleton()
@@ -13,9 +13,9 @@ export class PollManager {
   private readonly fifoFilePath: string;
 
   public constructor(
-    @inject(Services.LOGGER) private readonly logger: Logger,
-    @inject(Services.CONFIG) private readonly config: IConfig,
-    @inject(Services.CONFIGPROVIDER) private readonly configProvider: IConfigProvider,
+    @inject(SERVICES.LOGGER) private readonly logger: Logger,
+    @inject(SERVICES.CONFIG) private readonly config: IConfig,
+    @inject(SERVICES.CONFIGPROVIDER) private readonly configProvider: IConfigProvider,
     private readonly watcher: Watcher
   ) {
     this.gracefulReloadMaxSeconds = this.config.get<number>('gracefulReloadMaxSeconds');

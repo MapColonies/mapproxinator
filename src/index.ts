@@ -4,7 +4,7 @@ import { createServer } from 'node:http';
 import { createTerminus } from '@godaddy/terminus';
 import type { Logger } from '@map-colonies/js-logger';
 import { container } from 'tsyringe';
-import { DEFAULT_SERVER_PORT, Services } from './common/constants';
+import { DEFAULT_SERVER_PORT, SERVICES } from './common/constants';
 import { getApp } from './app';
 import type { IConfig } from './common/interfaces';
 import { Readiness } from './probe/readiness';
@@ -20,8 +20,8 @@ interface IServerConfig {
 void registerExternalValues()
   .then(() => {
     const initializer = container.resolve(Initializer);
-    const logger = container.resolve<Logger>(Services.LOGGER);
-    const config = container.resolve<IConfig>(Services.CONFIG);
+    const logger = container.resolve<Logger>(SERVICES.LOGGER);
+    const config = container.resolve<IConfig>(SERVICES.CONFIG);
     const pollManager = container.resolve(PollManager);
     const initMode = config.get<boolean>('initMode');
 

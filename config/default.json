@@ -34,7 +34,7 @@
     }
   },
   "initMode": true,
-  "configProvider": "fs",
+  "configProvider": "FS",
   "updatedTimeFileName": "updated_time.json",
   "updatedTimeJsonFilePath": "/path/to/existing/updated_time.json",
   "yamlDestinationFilePath": "/path/to/destination/mapproxy.yaml",

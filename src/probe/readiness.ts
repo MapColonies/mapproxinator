@@ -1,12 +1,12 @@
 import { HealthCheckError } from '@godaddy/terminus';
 import { inject, singleton } from 'tsyringe';
 import type { Logger } from '@map-colonies/js-logger';
-import { Services } from '../common/constants';
+import { SERVICES } from '../common/constants';
 
 @singleton()
 export class Readiness {
   public isReady = true;
-  public constructor(@inject(Services.LOGGER) private readonly logger: Logger) {
+  public constructor(@inject(SERVICES.LOGGER) private readonly logger: Logger) {
     this.logger = logger;
   }
 

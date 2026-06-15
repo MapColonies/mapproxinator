@@ -4,7 +4,7 @@ import type { PoolClient, PoolConfig } from 'pg';
 import { Pool } from 'pg';
 import { container } from 'tsyringe';
 import type { Logger } from '@map-colonies/js-logger';
-import { Services } from '../constants';
+import { SERVICES } from '../constants';
 import type { IConfigProvider, IDBConfig, IConfigQueryResult, IConfig } from '../interfaces';
 import { convertJsonToYaml, createLastUpdatedTimeJsonFile } from '../utils';
 
@@ -17,9 +17,9 @@ export class DBProvider implements IConfigProvider {
   private readonly yamlDestinationFilePath: string;
 
   public constructor() {
-    this.dbConfig = container.resolve(Services.DBCONFIG);
-    this.config = container.resolve(Services.CONFIG);
-    this.logger = container.resolve(Services.LOGGER);
+    this.dbConfig = container.resolve(SERVICES.DBCONFIG);
+    this.config = container.resolve(SERVICES.CONFIG);
+    this.logger = container.resolve(SERVICES.LOGGER);
     this.updatedTimeFileName = this.config.get<string>('updatedTimeFileName');
     this.yamlDestinationFilePath = this.config.get<string>('yamlDestinationFilePath');
 

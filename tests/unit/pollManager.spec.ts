@@ -3,7 +3,7 @@ import { Logger } from '@map-colonies/js-logger';
 import { registerTestValues } from '../integration/testContainerConfig';
 import { PollManager } from '../../src/pollManager';
 import { Watcher } from '../../src/watcher';
-import { Services } from '../../src/common/constants';
+import { SERVICES } from '../../src/common/constants';
 import { IConfigProvider } from '../../src/common/interfaces';
 
 let pollManager: PollManager;
@@ -20,7 +20,7 @@ describe('pollManager', () => {
     registerTestValues();
     pollManager = container.resolve(PollManager);
     watcher = container.resolve(Watcher);
-    configProvider = container.resolve(Services.CONFIGPROVIDER);
+    configProvider = container.resolve(SERVICES.CONFIGPROVIDER);
   });
 
   beforeEach(() => {
@@ -63,7 +63,7 @@ describe('pollManager', () => {
         error: jest.fn(),
         info: jest.fn(),
       } as unknown as Logger;
-      pollManager = new PollManager(loggerMock, container.resolve(Services.CONFIG), configProvider, watcher);
+      pollManager = new PollManager(loggerMock, container.resolve(SERVICES.CONFIG), configProvider, watcher);
       isUpdatedStub.mockRejectedValue(new Error('Error1'));
 
       await pollManager.poll();

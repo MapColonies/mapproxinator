@@ -6,21 +6,21 @@ export const DEFAULT_SERVER_PORT = 80;
 export const IGNORED_OUTGOING_TRACE_ROUTES = [/^.*\/v1\/metrics.*$/];
 export const IGNORED_INCOMING_TRACE_ROUTES = [/^.*\/docs.*$/];
 
-export enum Services {
-  LOGGER = 'ILogger',
-  CONFIG = 'IConfig',
-  TRACER = 'TRACER',
-  PROBE = 'PROBE',
-  DBCONFIG = 'DB',
-  S3CONFIG = 'S3',
-  FSCONFIG = 'FS',
-  CONFIGPROVIDER = 'CONFIGPROVIDER',
-}
+/* eslint-disable @typescript-eslint/naming-convention */
+export const SERVICES = {
+  LOGGER: Symbol('Logger'),
+  CONFIG: Symbol('Config'),
+  TRACER: Symbol('Tracer'),
+  DBCONFIG: Symbol('DB'),
+  S3CONFIG: Symbol('S3'),
+  FSCONFIG: Symbol('FS'),
+  CONFIGPROVIDER: Symbol('CONFIGPROVIDER'),
+} satisfies Record<string, symbol>;
 
 /* eslint-disable @typescript-eslint/naming-convention */
 export const ConfigProvider = {
-  FS: 'fs',
-  S3: 's3',
-  DB: 'db',
+  FS: 'FS',
+  S3: 'S3',
+  DB: 'DB',
 };
 /* eslint-enable @typescript-eslint/naming-convention */

@@ -4,7 +4,7 @@ import { trace } from '@opentelemetry/api';
 import { jsLogger } from '@map-colonies/js-logger';
 import { getTracing } from '@common/tracing';
 import { type InjectionObject, registerDependencies } from '@common/dependencyRegistration';
-import { SERVICE_NAME, Services } from './common/constants';
+import { ConfigProvider, SERVICE_NAME, SERVICES } from './common/constants';
 import { getProvider } from './common/getProvider';
 import { getConfig } from './common/config';
 
@@ -23,17 +23,17 @@ export const registerExternalValues = async (options?: RegisterOptions): Promise
   const tracer = trace.getTracer(SERVICE_NAME);
 
   const provider = configInstance.get('configProvider') as string;
-  const fsConfig = configInstance.get(Services.FSCONFIG);
-  const dbConfig = configInstance.get(Services.DBCONFIG);
-  const s3Config = configInstance.get(Services.S3CONFIG);
+  const fsConfig = configInstance.get(ConfigProvider.FS);
+  const dbConfig = configInstance.get(ConfigProvider.DB);
+  const s3Config = configInstance.get(ConfigProvider.S3);
 
   const dependencies: InjectionObject<unknown>[] = [
-    { token: Services.CONFIG, provider: { useValue: configInstance } },
-    { token: Services.LOGGER, provider: { useValue: logger } },
-    { token: Services.TRACER, provider: { useValue: tracer } },
-    { token: Services.FSCONFIG, provider: { useValue: fsConfig } },
-    { token: Services.DBCONFIG, provider: { useValue: dbConfig } },
-    { token: Services.S3CONFIG, provider: { useValue: s3Config } },
+    { token: SERVICES.CONFIG, provider: { useValue: configInstance } },
+    { token: SERVICES.LOGGER, provider: { useValue: logger } },
+    { token: SERVICES.TRACER, provider: { useValue: tracer } },
+    { token: SERVICES.FSCONFIG, provider: { useValue: fsConfig } },
+    { token: SERVICES.DBCONFIG, provider: { useValue: dbConfig } },
+    { token: SERVICES.S3CONFIG, provider: { useValue: s3Config } },
     {
       token: 'onSignal',
       provider: {
@@ -43,7 +43,7 @@ export const registerExternalValues = async (options?: RegisterOptions): Promise
       },
     },
     {
-      token: Services.CONFIGPROVIDER,
+      token: SERVICES.CONFIGPROVIDER,
       provider: {
         useFactory: instanceCachingFactory(() => getProvider(provider)),
       },
