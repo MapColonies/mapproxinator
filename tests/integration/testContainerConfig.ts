@@ -1,6 +1,6 @@
 import { jsLogger } from '@map-colonies/js-logger';
 import { trace } from '@opentelemetry/api';
-import { container } from 'tsyringe';
+import { container, instanceCachingFactory } from 'tsyringe';
 import { getConfig } from '../../src/common/config';
 import { ConfigProvider, SERVICES } from '../../src/common/constants';
 import { getProvider } from '../../src/common/getProvider';
@@ -17,6 +17,6 @@ export const registerTestValues = async (): Promise<void> => {
   container.register(SERVICES.TRACER, { useValue: testTracer });
   container.register(SERVICES.FSCONFIG, { useValue: fsConfig });
   container.register(SERVICES.CONFIGPROVIDER, {
-    useValue: getProvider(provider),
+    useFactory: instanceCachingFactory(() => getProvider(provider)),
   });
 };
