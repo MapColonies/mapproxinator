@@ -1,11 +1,12 @@
 import { jsLogger } from '@map-colonies/js-logger';
 import { trace } from '@opentelemetry/api';
 import { container, instanceCachingFactory } from 'tsyringe';
-import { getConfig } from '../../src/common/config';
-import { ConfigProvider, SERVICES } from '../../src/common/constants';
-import { getProvider } from '../../src/common/getProvider';
+import { getConfig, initConfig } from '@src/common/config';
+import { ConfigProvider, SERVICES } from '@src/common/constants';
+import { getProvider } from '@src/common/getProvider';
 
 export const registerTestValues = async (): Promise<void> => {
+  await initConfig(true);
   const configInstance = getConfig();
   const logger = await jsLogger({ enabled: false });
   const testTracer = trace.getTracer('testTracer');

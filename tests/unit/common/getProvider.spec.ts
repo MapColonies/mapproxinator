@@ -1,32 +1,36 @@
+import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { ConfigProvider } from '@src/common/constants';
-import { registerTestValues } from '../../integration/testContainerConfig';
-import { getProvider } from '../../../src/common/getProvider';
+import { getProvider } from '@src/common/getProvider';
+import { DBProvider } from '@src/common/providers/dbProvider';
+import { FSProvider } from '@src/common/providers/fsProvider';
+import { S3Provider } from '@src/common/providers/s3Provider';
+import { registerTestValues } from '@tests/integration/testContainerConfig';
 
-jest.mock('../../../src/common/providers/fsProvider');
-jest.mock('../../../src/common/providers/s3Provider');
-jest.mock('../../../src/common/providers/dbProvider');
+vi.mock('../../../src/common/providers/fsProvider');
+vi.mock('../../../src/common/providers/s3Provider');
+vi.mock('../../../src/common/providers/dbProvider');
 
 describe('getProvider', () => {
-  beforeEach(() => {
-    registerTestValues();
-    jest.clearAllMocks();
+  beforeEach(async () => {
+    await registerTestValues();
+    vi.clearAllMocks();
   });
 
   it('should return a DB provider', () => {
-    const providerName = 'DBProvider';
     const provider = getProvider(ConfigProvider.DB);
-    expect(provider.constructor.name).toBe(providerName);
+
+    expect(provider).toBeInstanceOf(DBProvider);
   });
 
-  it('should return an FS provider', () => {
-    const providerName = 'FSProvider';
+  it('should return a FS provider', () => {
     const provider = getProvider(ConfigProvider.FS);
-    expect(provider.constructor.name).toBe(providerName);
+
+    expect(provider).toBeInstanceOf(FSProvider);
   });
 
   it('should return a S3 provider', () => {
-    const providerName = 'S3Provider';
     const provider = getProvider(ConfigProvider.S3);
-    expect(provider.constructor.name).toBe(providerName);
+
+    expect(provider).toBeInstanceOf(S3Provider);
   });
 });

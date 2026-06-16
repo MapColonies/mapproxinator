@@ -1,4 +1,5 @@
-import * as utils from '../../../src/common/utils';
+import { describe, expect, it } from 'vitest';
+import * as utils from '@src/common/utils';
 
 describe('utils', () => {
   describe('#getFileContentAsJson', () => {
@@ -9,6 +10,7 @@ describe('utils', () => {
       };
       // action
       const lastUpdatedTime = await utils.getFileContentAsJson(jsonFilePath);
+
       // expectation
       expect(typeof lastUpdatedTime).toBe('object');
       expect(lastUpdatedTime).toEqual(expectedResult);
@@ -21,6 +23,7 @@ describe('utils', () => {
       const date2 = new Date('2021-07-22T10:12:20.933Z');
       // action
       const result = utils.compareDates(date1, date2);
+
       // expectation
       expect(result).toBe(true);
     });
@@ -30,6 +33,7 @@ describe('utils', () => {
       const date2 = new Date('2021-07-22T10:12:20.933Z');
       // action
       const result = utils.compareDates(date1, date2);
+
       // expectation
       expect(result).toBe(false);
     });
