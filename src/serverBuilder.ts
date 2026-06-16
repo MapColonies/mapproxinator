@@ -1,5 +1,5 @@
 import { getErrorHandlerMiddleware } from '@map-colonies/error-express-handler';
-import httpLogger from '@map-colonies/express-access-log-middleware';
+import { httpLogger } from '@map-colonies/express-access-log-middleware';
 import type { Logger } from '@map-colonies/js-logger';
 import { OpenapiViewerRouter } from '@map-colonies/openapi-express-viewer';
 import { json } from 'body-parser';
@@ -16,7 +16,7 @@ export class ServerBuilder {
 
   public constructor(
     @inject(SERVICES.CONFIG) private readonly config: ConfigType,
-    @inject(SERVICES.LOGGER) private readonly logger: Logger,
+    @inject(SERVICES.LOGGER) private readonly logger: Logger
   ) {
     this.serverInstance = express();
   }
