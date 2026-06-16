@@ -17,7 +17,6 @@ export const SERVICES = {
   CONFIGPROVIDER: Symbol('CONFIGPROVIDER'),
 } satisfies Record<string, symbol>;
 
-/* eslint-disable @typescript-eslint/naming-convention */
 export const ConfigProvider = {
   FS: 'FS',
   S3: 'S3',
