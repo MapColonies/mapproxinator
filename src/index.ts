@@ -18,7 +18,7 @@ interface IServerConfig {
 }
 
 void registerExternalValues()
-  .then(() => {
+  .then(async () => {
     const initializer = container.resolve(Initializer);
     const logger = container.resolve<Logger>(SERVICES.LOGGER);
     const config = container.resolve<IConfig>(SERVICES.CONFIG);
@@ -44,17 +44,19 @@ void registerExternalValues()
     try {
       if (initMode) {
         logger.info(`starting initMode`);
-        void initializer.init();
+        await initializer.init();
       } else {
         logger.info(`starting Server`);
         startServer();
         logger.info(`start polling`);
-        void pollManager.poll();
+        await pollManager.poll();
       }
     } catch (err) {
       logger.fatal({ msg: `Fatal error occurred when running and crashed the service`, err });
+      process.exit(1);
     }
   })
   .catch((err) => {
     console.error({ msg: 'Could not register values', err: JSON.stringify(err) });
+    process.exit(1);
   });
