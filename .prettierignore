@@ -5,6 +5,5 @@ README.md
 node_modules
 *.html
 coverage
-helm
 reports
 .release-please-manifest.json
