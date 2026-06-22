@@ -1,8 +1,8 @@
 /* eslint-disable @typescript-eslint/naming-convention */
-import { Logger } from '@map-colonies/js-logger';
+import type { Logger } from '@map-colonies/js-logger';
 import { inject, singleton } from 'tsyringe';
-import { Services } from './common/constants';
-import { IConfigProvider, IConfig } from './common/interfaces';
+import { SERVICES } from './common/constants';
+import type { IConfigProvider, IConfig } from './common/interfaces';
 import { compareDates, getFileContentAsJson } from './common/utils';
 
 @singleton()
@@ -10,9 +10,9 @@ export class Watcher {
   private lastUpdatedTime: Date | undefined;
   private readonly updatedTimeFilePath: string;
   public constructor(
-    @inject(Services.CONFIG) private readonly config: IConfig,
-    @inject(Services.CONFIGPROVIDER) private readonly configProvider: IConfigProvider,
-    @inject(Services.LOGGER) private readonly logger: Logger
+    @inject(SERVICES.CONFIG) private readonly config: IConfig,
+    @inject(SERVICES.CONFIGPROVIDER) private readonly configProvider: IConfigProvider,
+    @inject(SERVICES.LOGGER) private readonly logger: Logger
   ) {
     this.updatedTimeFilePath = this.config.get<string>('updatedTimeJsonFilePath');
   }

@@ -3,28 +3,43 @@
     "filePath": "OPENAPI_FILE_PATH"
   },
   "telemetry": {
-    "serviceName": "TELEMETRY_SERVICE_NAME",
-    "hostname": "TELEMETRY_HOST_NAME",
-    "version": "TELEMETRY_SERVICE_VERSION",
     "logger": {
       "level": "LOG_LEVEL",
+      "opentelemetryOptions": {
+        "enabled": {
+          "__name": "OPENTELEMETRY_LOGGING_ENABLED",
+          "__format": "boolean"
+        },
+        "url": "OPENTELEMETRY_LOGGING_URL",
+        "resourceAttributes": {
+          "__name": "OPENTELEMETRY_RESOURCE_ATTRIBUTES",
+          "__format": "json"
+        }
+      },
       "prettyPrint": {
         "__name": "LOG_PRETTY_PRINT_ENABLED",
         "__format": "boolean"
       }
     },
-    "tracing": {
-      "enabled": "TELEMETRY_TRACING_ENABLED",
-      "url": "TELEMETRY_TRACING_URL"
-    },
     "metrics": {
       "enabled": "TELEMETRY_METRICS_ENABLED",
       "url": "TELEMETRY_METRICS_URL",
       "interval": "TELEMETRY_METRICS_INTERVAL"
+    },
+    "shared": {},
+    "tracing": {
+      "isEnabled": {
+        "__name": "TELEMETRY_TRACING_ENABLED",
+        "__format": "boolean"
+      },
+      "url": "TELEMETRY_TRACING_URL"
     }
   },
   "server": {
-    "port": "SERVER_PORT",
+    "port": {
+      "__name": "SERVER_PORT",
+      "__format": "number"
+    },
     "request": {
       "payload": {
         "limit": "REQUEST_PAYLOAD_LIMIT"

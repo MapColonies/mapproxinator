@@ -1,13 +1,14 @@
-import { container } from 'tsyringe';
 import { HealthCheckError } from '@godaddy/terminus';
-import { registerTestValues } from '../../integration/testContainerConfig';
-import { Liveness } from '../../../src/probe/liveness';
+import { container } from 'tsyringe';
+import { afterEach, beforeAll, beforeEach, describe, expect, it, vi } from 'vitest';
+import { Liveness } from '@src/probe/liveness';
+import { registerTestValues } from '@tests/integration/testContainerConfig';
 
 let liveness: Liveness;
 
 describe('liveness', () => {
-  beforeAll(() => {
-    registerTestValues();
+  beforeAll(async () => {
+    await registerTestValues();
   });
 
   beforeEach(() => {
@@ -15,18 +16,20 @@ describe('liveness', () => {
   });
 
   afterEach(() => {
-    jest.clearAllMocks();
+    vi.clearAllMocks();
   });
 
   describe('probe', () => {
     it('should successfully resovle with no error if isLive is true', async () => {
       const res = liveness.probe();
+
       await expect(res).resolves.not.toThrow();
     });
 
     it('should throw an HealthCheckError error if isLive is false', async () => {
       liveness.kill();
       const res = liveness.probe();
+
       await expect(res).rejects.toThrow(HealthCheckError);
     });
   });

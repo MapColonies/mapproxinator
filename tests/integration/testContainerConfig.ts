@@ -1,26 +1,23 @@
-import { container } from 'tsyringe';
-import config from 'config';
+import { jsLogger } from '@map-colonies/js-logger';
 import { trace } from '@opentelemetry/api';
-import jsLogger from '@map-colonies/js-logger';
-import { Services } from '../../src/common/constants';
-import { IPollConfig } from '../../src/common/interfaces';
-import { getProvider } from '../../src/common/getProvider';
+import { container, instanceCachingFactory } from 'tsyringe';
+import { getConfig, initConfig } from '@src/common/config';
+import { ConfigProvider, SERVICES } from '@src/common/constants';
+import { getProvider } from '@src/common/getProvider';
 
-function registerTestValues(): void {
-  const pollConfig = config.get<IPollConfig>('poll');
-  const provider = config.get<string>('configProvider');
-  const fsConfig = config.get(Services.FSCONFIG);
-  container.register(Services.CONFIG, { useValue: config });
-  container.register(Services.LOGGER, { useValue: jsLogger({ enabled: false }) });
-  container.register(Services.POLLCONFIG, { useValue: pollConfig });
-  container.register(Services.FSCONFIG, { useValue: fsConfig });
-  // if sdk is not initialized then getTracer returns a NoopTracer
+export const registerTestValues = async (): Promise<void> => {
+  await initConfig(true);
+  const configInstance = getConfig();
+  const logger = await jsLogger({ enabled: false });
   const testTracer = trace.getTracer('testTracer');
-  container.register(Services.TRACER, { useValue: testTracer });
-
-  container.register(Services.CONFIGPROVIDER, {
-    useValue: getProvider(provider),
+  const provider = configInstance.get('configProvider') as string;
+  const fsConfig = configInstance.get(ConfigProvider.FS);
+  container.register(SERVICES.CONFIG, { useValue: configInstance });
+  container.register(SERVICES.LOGGER, { useValue: logger });
+  // if sdk is not initialized then getTracer returns a NoopTracer
+  container.register(SERVICES.TRACER, { useValue: testTracer });
+  container.register(SERVICES.FSCONFIG, { useValue: fsConfig });
+  container.register(SERVICES.CONFIGPROVIDER, {
+    useFactory: instanceCachingFactory(() => getProvider(provider)),
   });
-}
-
-export { registerTestValues };
+};

@@ -1,10 +1,10 @@
-import { dirname, join } from 'path';
-import { promises as fsp, readFileSync } from 'fs';
-import { Pool, PoolClient, PoolConfig } from 'pg';
+import { promises as fsp, readFileSync } from 'node:fs';
+import { dirname, join } from 'node:path';
+import type { Logger } from '@map-colonies/js-logger';
+import { Pool, type PoolClient, type PoolConfig } from 'pg';
 import { container } from 'tsyringe';
-import { Logger } from '@map-colonies/js-logger';
-import { Services } from '../constants';
-import { IConfigProvider, IDBConfig, IConfigQueryResult, IConfig } from '../interfaces';
+import { SERVICES } from '../constants';
+import type { IConfig, IConfigProvider, IConfigQueryResult, IDBConfig } from '../interfaces';
 import { convertJsonToYaml, createLastUpdatedTimeJsonFile } from '../utils';
 
 export class DBProvider implements IConfigProvider {
@@ -16,9 +16,9 @@ export class DBProvider implements IConfigProvider {
   private readonly yamlDestinationFilePath: string;
 
   public constructor() {
-    this.dbConfig = container.resolve(Services.DBCONFIG);
-    this.config = container.resolve(Services.CONFIG);
-    this.logger = container.resolve(Services.LOGGER);
+    this.dbConfig = container.resolve(SERVICES.DBCONFIG);
+    this.config = container.resolve(SERVICES.CONFIG);
+    this.logger = container.resolve(SERVICES.LOGGER);
     this.updatedTimeFileName = this.config.get<string>('updatedTimeFileName');
     this.yamlDestinationFilePath = this.config.get<string>('yamlDestinationFilePath');
 
@@ -48,8 +48,9 @@ export class DBProvider implements IConfigProvider {
     const client = await this.connectToDb();
     try {
       const query = `SELECT ${this.dbConfig.columns.updatedTime} FROM ${this.dbConfig.table} ORDER BY ${this.dbConfig.columns.updatedTime} DESC limit 1`;
-      const result = await client.query<IConfigQueryResult>(query);
-      const lastUpdatedTime = result.rows[0].updated_time;
+      const queryResult = await client.query<IConfigQueryResult>(query);
+      if (!queryResult.rows[0]) throw new Error('Empty rows response');
+      const lastUpdatedTime = queryResult.rows[0].updated_time;
       return lastUpdatedTime;
     } catch (err) {
       this.logger.error({ msg: 'Failed to get last updated time', err });
@@ -64,6 +65,7 @@ export class DBProvider implements IConfigProvider {
     try {
       const query = `SELECT * FROM ${this.dbConfig.table} ORDER BY ${this.dbConfig.columns.updatedTime} DESC limit 1`;
       const queryResult = await pgClient.query<IConfigQueryResult>(query);
+      if (!queryResult.rows[0]) throw new Error('Empty rows response');
       const jsonContent = queryResult.rows[0].data;
       const updatedTime = queryResult.rows[0].updated_time;
       const yamlContent = convertJsonToYaml(jsonContent);

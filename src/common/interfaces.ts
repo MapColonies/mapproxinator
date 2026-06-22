@@ -1,7 +1,5 @@
-/* eslint-disable @typescript-eslint/naming-convention */
 export interface IConfig {
   get: <T>(setting: string) => T;
-  has: (setting: string) => boolean;
 }
 
 export interface OpenApiConfig {
@@ -26,10 +24,13 @@ export interface IPollConfig {
   };
 }
 
+/* eslint-disable @typescript-eslint/naming-convention */
 export interface IConfigQueryResult {
   data: Record<string, unknown>;
   updated_time: Date;
 }
+/* eslint-enable @typescript-eslint/naming-convention */
+
 export interface IFSConfig {
   yamlSourceFilePath: string;
 }

@@ -1,38 +1,54 @@
-import { container } from 'tsyringe';
-import config from 'config';
-import { getOtelMixin } from '@map-colonies/telemetry';
+import { instanceCachingFactory, type DependencyContainer } from 'tsyringe';
+import { getOtelMixin } from '@map-colonies/tracing-utils';
 import { trace } from '@opentelemetry/api';
-import jsLogger, { LoggerOptions } from '@map-colonies/js-logger';
-import { Services } from './common/constants';
-import { tracing } from './common/tracing';
-import { IPollConfig } from './common/interfaces';
+import { jsLogger } from '@map-colonies/js-logger';
+import { getTracing } from '@common/tracing';
+import { type InjectionObject, registerDependencies } from '@common/dependencyRegistration';
+import { ConfigProvider, SERVICE_NAME, SERVICES } from './common/constants';
 import { getProvider } from './common/getProvider';
+import { getConfig } from './common/config';
 
-function registerExternalValues(): void {
-  const loggerConfig = config.get<LoggerOptions>('telemetry.logger');
-  const provider = config.get<string>('configProvider');
-  const pollConfig = config.get<IPollConfig>('poll');
-  const fsConfig = config.get(Services.FSCONFIG);
-  const dbConfig = config.get(Services.DBCONFIG);
-  const s3Config = config.get(Services.S3CONFIG);
-  const logger = jsLogger({ ...loggerConfig, prettyPrint: loggerConfig.prettyPrint, mixin: getOtelMixin() });
-  container.register(Services.CONFIG, { useValue: config });
-  container.register(Services.LOGGER, { useValue: logger });
-  container.register(Services.FSCONFIG, { useValue: fsConfig });
-  container.register(Services.DBCONFIG, { useValue: dbConfig });
-  container.register(Services.S3CONFIG, { useValue: s3Config });
-  container.register(Services.POLLCONFIG, { useValue: pollConfig });
-  tracing.start();
-  const tracer = trace.getTracer('app');
-  container.register(Services.TRACER, { useValue: tracer });
-  container.register('onSignal', {
-    useValue: async (): Promise<void> => {
-      await Promise.all([tracing.stop()]);
-    },
-  });
-  container.register(Services.CONFIGPROVIDER, {
-    useValue: getProvider(provider),
-  });
+export interface RegisterOptions {
+  override?: InjectionObject<unknown>[];
+  useChild?: boolean;
 }
 
-export { registerExternalValues };
+export const registerExternalValues = async (options?: RegisterOptions): Promise<DependencyContainer> => {
+  const configInstance = getConfig();
+
+  const loggerConfig = configInstance.get('telemetry.logger');
+
+  const logger = await jsLogger({ ...loggerConfig, prettyPrint: loggerConfig.prettyPrint, mixin: getOtelMixin() });
+
+  const tracer = trace.getTracer(SERVICE_NAME);
+
+  const provider = configInstance.get('configProvider') as string;
+  const fsConfig = configInstance.get(ConfigProvider.FS);
+  const dbConfig = configInstance.get(ConfigProvider.DB);
+  const s3Config = configInstance.get(ConfigProvider.S3);
+
+  const dependencies: InjectionObject<unknown>[] = [
+    { token: SERVICES.CONFIG, provider: { useValue: configInstance } },
+    { token: SERVICES.LOGGER, provider: { useValue: logger } },
+    { token: SERVICES.TRACER, provider: { useValue: tracer } },
+    { token: SERVICES.FSCONFIG, provider: { useValue: fsConfig } },
+    { token: SERVICES.DBCONFIG, provider: { useValue: dbConfig } },
+    { token: SERVICES.S3CONFIG, provider: { useValue: s3Config } },
+    {
+      token: 'onSignal',
+      provider: {
+        useValue: async (): Promise<void> => {
+          await Promise.all([getTracing().stop()]);
+        },
+      },
+    },
+    {
+      token: SERVICES.CONFIGPROVIDER,
+      provider: {
+        useFactory: instanceCachingFactory(() => getProvider(provider)),
+      },
+    },
+  ];
+
+  return Promise.resolve(registerDependencies(dependencies, options?.override, options?.useChild));
+};

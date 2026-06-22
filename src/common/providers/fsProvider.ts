@@ -1,8 +1,8 @@
-import { dirname, join } from 'path';
-import { promises as fsp } from 'fs';
+import { dirname, join } from 'node:path';
+import { promises as fsp } from 'node:fs';
 import { container } from 'tsyringe';
-import { IConfig, IConfigProvider, IFSConfig } from '../interfaces';
-import { Services } from '../constants';
+import type { IConfig, IConfigProvider, IFSConfig } from '../interfaces';
+import { SERVICES } from '../constants';
 import { createLastUpdatedTimeJsonFile } from '../utils';
 
 export class FSProvider implements IConfigProvider {
@@ -11,8 +11,8 @@ export class FSProvider implements IConfigProvider {
   private readonly updatedTimeFileName: string;
   private readonly yamlDestinationFilePath: string;
   public constructor() {
-    this.config = container.resolve(Services.CONFIG);
-    this.fsConfig = this.config.get<IFSConfig>(Services.FSCONFIG);
+    this.config = container.resolve(SERVICES.CONFIG);
+    this.fsConfig = container.resolve(SERVICES.FSCONFIG);
     this.updatedTimeFileName = this.config.get<string>('updatedTimeFileName');
     this.yamlDestinationFilePath = this.config.get<string>('yamlDestinationFilePath');
   }

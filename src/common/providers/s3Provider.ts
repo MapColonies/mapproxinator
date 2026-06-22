@@ -1,12 +1,12 @@
 /* eslint-disable @typescript-eslint/naming-convention */
-import { join, dirname } from 'path';
-import { promises as fsp } from 'fs';
+import { join, dirname } from 'node:path';
+import { promises as fsp } from 'node:fs';
 import S3 from 'aws-sdk/clients/s3';
 import * as AWS from 'aws-sdk';
 import { container } from 'tsyringe';
-import { CredentialsOptions } from 'aws-sdk/lib/credentials';
-import { IConfig, IConfigProvider, IS3Config } from '../interfaces';
-import { Services } from '../constants';
+import type { CredentialsOptions } from 'aws-sdk/lib/credentials';
+import type { IConfig, IConfigProvider, IS3Config } from '../interfaces';
+import { SERVICES } from '../constants';
 import { createLastUpdatedTimeJsonFile } from '../utils';
 
 export class S3Provider implements IConfigProvider {
@@ -18,8 +18,8 @@ export class S3Provider implements IConfigProvider {
   private readonly yamlDestinationFilePath: string;
 
   public constructor() {
-    this.config = container.resolve(Services.CONFIG);
-    this.s3Config = container.resolve(Services.S3CONFIG);
+    this.config = container.resolve(SERVICES.CONFIG);
+    this.s3Config = container.resolve(SERVICES.S3CONFIG);
     this.updatedTimeFileName = this.config.get<string>('updatedTimeFileName');
     this.yamlDestinationFilePath = this.config.get<string>('yamlDestinationFilePath');
     const credentials: CredentialsOptions = {

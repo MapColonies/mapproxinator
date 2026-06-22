@@ -1,38 +1,39 @@
+import type { Logger } from '@map-colonies/js-logger';
 import { container } from 'tsyringe';
-import { Logger } from '@map-colonies/js-logger';
-import { registerTestValues } from '../integration/testContainerConfig';
-import { PollManager } from '../../src/pollManager';
-import { Watcher } from '../../src/watcher';
-import { Services } from '../../src/common/constants';
-import { IConfigProvider } from '../../src/common/interfaces';
+import { afterEach, beforeAll, beforeEach, describe, expect, it, vi, type Mock } from 'vitest';
+import { SERVICES } from '@src/common/constants';
+import type { IConfigProvider } from '@src/common/interfaces';
+import { PollManager } from '@src/pollManager';
+import { Watcher } from '@src/watcher';
+import { registerTestValues } from '@tests/integration/testContainerConfig';
 
 let pollManager: PollManager;
 let watcher: Watcher;
 // eslint-disable-next-line @typescript-eslint/naming-convention
 let configProvider: IConfigProvider;
-let isUpdatedStub: jest.SpyInstance;
-let reloadStub: jest.SpyInstance;
-let createOrUpdateConfigFileStub: jest.SpyInstance;
-let delaySpy: jest.SpyInstance;
+let isUpdatedStub: Mock;
+let reloadStub: Mock;
+let createOrUpdateConfigFileStub: Mock;
+let delaySpy: Mock;
 
 describe('pollManager', () => {
-  beforeAll(() => {
-    registerTestValues();
+  beforeAll(async () => {
+    await registerTestValues();
     pollManager = container.resolve(PollManager);
     watcher = container.resolve(Watcher);
-    configProvider = container.resolve(Services.CONFIGPROVIDER);
+    configProvider = container.resolve(SERVICES.CONFIGPROVIDER);
   });
 
   beforeEach(() => {
-    isUpdatedStub = jest.spyOn(watcher, 'isUpdated');
-    delaySpy = jest.spyOn(pollManager, 'delay');
+    isUpdatedStub = vi.spyOn(watcher, 'isUpdated');
+    delaySpy = vi.spyOn(pollManager, 'delay');
     delaySpy.mockImplementation(async () => Promise.resolve());
-    reloadStub = jest.spyOn(pollManager, 'reloadApp').mockReturnValue(undefined);
-    createOrUpdateConfigFileStub = jest.spyOn(configProvider, 'createOrUpdateConfigFile').mockResolvedValue(undefined);
+    reloadStub = vi.spyOn(pollManager, 'reloadApp').mockReturnValue(undefined);
+    createOrUpdateConfigFileStub = vi.spyOn(configProvider, 'createOrUpdateConfigFile').mockResolvedValue(undefined);
   });
 
   afterEach(() => {
-    jest.clearAllMocks();
+    vi.clearAllMocks();
   });
 
   describe('poll', () => {
@@ -40,6 +41,7 @@ describe('pollManager', () => {
       isUpdatedStub.mockResolvedValue(true);
 
       const res = pollManager.poll();
+
       await expect(res).resolves.not.toThrow();
 
       expect(isUpdatedStub).toHaveBeenCalled();
@@ -51,6 +53,7 @@ describe('pollManager', () => {
       isUpdatedStub.mockResolvedValue(false);
 
       const res = pollManager.poll();
+
       await expect(res).resolves.not.toThrow();
       expect(isUpdatedStub).toHaveBeenCalledTimes(1);
       expect(reloadStub).toHaveBeenCalledTimes(1);
@@ -59,11 +62,11 @@ describe('pollManager', () => {
 
     it('should reject and not to throw an error due to poll date error (watcher)', async () => {
       const loggerMock = {
-        debug: jest.fn(),
-        error: jest.fn(),
-        info: jest.fn(),
+        debug: vi.fn(),
+        error: vi.fn(),
+        info: vi.fn(),
       } as unknown as Logger;
-      pollManager = new PollManager(loggerMock, container.resolve(Services.POLLCONFIG), configProvider, watcher);
+      pollManager = new PollManager(loggerMock, container.resolve(SERVICES.CONFIG), configProvider, watcher);
       isUpdatedStub.mockRejectedValue(new Error('Error1'));
 
       await pollManager.poll();
