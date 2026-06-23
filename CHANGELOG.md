@@ -2,6 +2,19 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.3.0](https://github.com/MapColonies/mapproxinator/compare/v1.2.5...v1.3.0) (2026-06-23)
+
+
+### Features
+
+* infrastructure and boilerplate maintenance (MAPCO-10810) ([#27](https://github.com/MapColonies/mapproxinator/issues/27)) ([84927ee](https://github.com/MapColonies/mapproxinator/commit/84927eeec85fc000d6c9cfba535d3b6460f90501))
+* upgrade node, workflows and release-please ([#24](https://github.com/MapColonies/mapproxinator/issues/24)) ([f22f882](https://github.com/MapColonies/mapproxinator/commit/f22f88233979e9485112af97d6a306bc212abaf8))
+
+
+### Bug Fixes
+
+* release-please ([#25](https://github.com/MapColonies/mapproxinator/issues/25)) ([c12c617](https://github.com/MapColonies/mapproxinator/commit/c12c617612a788a711626b63f3ab333a1812983d))
+
 ### [1.2.5](https://github.com/MapColonies/mapproxinator/compare/v1.2.4...v1.2.5) (2024-04-04)
 
 
