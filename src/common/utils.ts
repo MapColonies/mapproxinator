@@ -23,8 +23,8 @@ export const createLastUpdatedTimeJsonFile = async (dest: string, timestamp: Dat
 // read json object and convert it into a yaml content
 export function convertJsonToYaml(json: Record<string, unknown>): string {
   try {
-    const yamlContent: string = dump(json, { noArrayIndent: true });
-    return yamlContent;
+    const yamlContent: string = dump(json, { noArrayIndent: true, noCompatMode: true });
+    return yamlContent.replace(/^(\s*)['"](\d+)['"]\s*:/gm, '$1$2:');
   } catch (error) {
     const message = error instanceof Error ? error.message : JSON.stringify(error);
     throw new Error(message);

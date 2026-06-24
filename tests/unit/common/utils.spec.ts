@@ -38,4 +38,46 @@ describe('utils', () => {
       expect(result).toBe(false);
     });
   });
+
+  describe('#convertJsonToYaml', () => {
+    it('should convert a simple json object to yaml', function () {
+      const json = { key: 'value', number: 42 };
+      const result = utils.convertJsonToYaml(json);
+      expect(result).toContain('key: value');
+      expect(result).toContain('number: 42');
+    });
+
+    it('should not quote YAML 1.1 boolean-like string values (noCompatMode)', function () {
+      // In YAML 1.1 compat mode, values like "yes"/"no"/"on"/"off" would be quoted.
+      // With noCompatMode: true they are emitted without quotes.
+      const json: Record<string, unknown> = { enabled: 'yes', disabled: 'no', toggle: 'on', flag: 'off' };
+      const result = utils.convertJsonToYaml(json);
+      expect(result).toContain('enabled: yes');
+      expect(result).toContain('disabled: no');
+      expect(result).toContain('toggle: on');
+      expect(result).toContain('flag: off');
+      // Ensure none of the boolean-like string values are quoted
+      expect(result).not.toMatch(/enabled:\s+['"]yes['"]/);
+      expect(result).not.toMatch(/disabled:\s+['"]no['"]/);
+      expect(result).not.toMatch(/toggle:\s+['"]on['"]/);
+      expect(result).not.toMatch(/flag:\s+['"]off['"]/);
+    });
+
+    it('should strip quotes from numeric string keys', function () {
+      // js-yaml quotes numeric string keys (e.g. '123': value).
+      // The regex should remove those quotes so they appear as bare numbers.
+      const json: Record<string, unknown> = { '123': 'alpha', '456': 'beta' };
+      const result = utils.convertJsonToYaml(json);
+      expect(result).toContain('123: alpha');
+      expect(result).toContain('456: beta');
+      expect(result).not.toMatch(/['"]\d+['"]\s*:/);
+    });
+
+    it('should strip quotes from nested numeric string keys', function () {
+      const json: Record<string, unknown> = { nested: { '99': 'deep' } };
+      const result = utils.convertJsonToYaml(json);
+      expect(result).toContain('99: deep');
+      expect(result).not.toMatch(/['"]99['"]\s*:/);
+    });
+  });
 });
